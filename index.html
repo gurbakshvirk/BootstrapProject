@@ -1,77 +1,49 @@
-<!DOCTYPE html>
 <html>
 <head>
     <title>Shoe Hut</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <!-- Custom CSS -->
     <link rel="stylesheet" href="styles.css">
-
-    <!-- Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Miniver&family=Poppins&family=Roboto&display=swap" rel="stylesheet">
-
-    <!-- Font Awesome 6 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"> -->
-
-
-    <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-
-    <!-- aos  css -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-
-    
-
 </head>
 <body>
 <header>
-<nav class="navbar navbar-expand-lg navbar-light bg-light px-5 border-bottom fixed-top">
-  <div class="container-fluid">
-    <a class="navbar-brand fs-2" href="#">Shoe<span class="text-secondary">Hut</span></a>
+<nav class="navbar navbar-expand-lg navbar-light bg-light px-4 border-bottom fixed-top">
+  <div class="container-fluid ">
+    <a class="navbar-brand fs-6 d-flex align-items-center" href="index.html">
+  <img src="assets/logoshoe2.png" style="height: 8vh; width: 8vh;">
+  <span style="display:inline-block; width:auto; height:auto; margin-left: 5px;">ShoeHut</span>
+</a>
+
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav ms-auto mb-2 mb-lg-0 fs-5 text-end">
         <li class="nav-item">
-          <a class="nav-link active text-primary" aria-current="page" href="#">Home</a>
+          <a class="nav-link active text-primary" aria-current="page" href="index.html">Home</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">About</a>
-        </li>
-        
-        <!-- <li class="nav-item">
-          <a class="nav-link" href="#">Contact</a>
-        </li> -->
-        <!-- <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Products
-          </a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="products.html">MensWear</a></li>
-            <li><a class="dropdown-item" href="#">Women</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#">Kids</a></li>
-          </ul>
-        </li> -->
         <li class="nav-item">
           <a class="nav-link" href="products.html">Products</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Our Reviews</a>
+          <a class="nav-link" href="about.html">About</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="cart.html">Cart</a>
         </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Support
           </a>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#">Contact Us</a></li>
+            <li><a class="dropdown-item" href="signin.html">SignIn</a></li>
+            <li><a class="dropdown-item" href="contact.html">Contact Us</a></li>
           </ul>
         </li>
        
@@ -82,13 +54,13 @@
 <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
   <div class="carousel-inner">
     <div class="carousel-item active">
-      <img src="assets/0.jpg" class="d-block w-100" width="80%" height="80vh" alt="image1">
+      <img src="assets/whitesneaker.jpg" class="d-block w-100" alt="image1">
     </div>
     <div class="carousel-item">
-      <img src="assets/slide1.jpg" class="d-block w-100" width="80%" height="80vh" alt="image2">
+      <img src="assets/slide1.jpg" class="d-block w-100" alt="image2">
     </div>
     <div class="carousel-item">
-      <img src="assets/blacksneaker.jpg" class="d-block w-100" width="80%" height="80vh" alt="image3">
+      <img src="assets/slide.jpg" class="d-block w-100" alt="image3">
     </div>
   </div>
   <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
@@ -112,55 +84,66 @@
     <div class="row"> 
       <div class="col-sm-12 col-md-6 col-lg-6 col-12 p-2" data-aos="zoom-in" data-aos-offset="200">
         <h1>What do you <span class="text-dark">want to know??</span></h1>
-        <p class="p-2">
+        <p class="p-2 para">
           "Step into style and comfort with our latest collection of shoes.
            Whether you're heading to the office, hitting the gym, or just out for a stroll,
             we’ve got the perfect pair for every step you take. Discover quality, durability, 
             and fashion — all in one place."
         </p>
-        <button type="button" class="btn btn-light mb-5">Explore More</button>
+
+
+
+        <button type="button" class="btn btn-light mb-5 explore-btn">Explore More</button>
+
+
+
+
         <div class="accordion" id="accordionExample" data-aos="zoom-in-left " data-aos-offset="200">
       <div class="accordion-item">
         <h2 class="accordion-header" id="headingOne">
           <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-            fvegrgheg
+            Everyday Essentials – Stay Cool, Walk Easy
           </button>
         </h2>
         <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
           <div class="accordion-body">
-            <strong>This is the first item's accordion body.</strong> It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+            <p>Discover the perfect balance of comfort and street-ready style with our men’s casual shoes. Whether you're heading out for a coffee run or a weekend hangout, ShoeHut’s casual range keeps your vibe effortless and your steps light.
+
+</p>
           </div>
         </div>
       </div>
       <div class="accordion-item">
         <h2 class="accordion-header" id="headingTwo">
           <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-            title 2
+            Sharp Looks Start at Your Feet – Premium Formal Footwear
           </button>
         </h2>
         <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
           <div class="accordion-body">
-            <strong>This is the second item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+            <p>Make a strong impression with our range of men’s formal shoes. Whether it's a business meeting or a wedding event, ShoeHut offers finely crafted leather shoes and classic designs to complete your formal ensemble with class.</p>
           </div>
         </div>
       </div>
       <div class="accordion-item">
         <h2 class="accordion-header" id="headingThree">
           <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-            Accordion Item #3
+            Built to Perform – Men’s Sports & Running Shoes
           </button>
         </h2>
         <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
           <div class="accordion-body">
-            <strong>This is the third item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+            <p>Take your performance to the next level with high-quality sports shoes from ShoeHut. Designed for runners, gym-goers, and athletes, our collection combines breathable materials, great cushioning, and bold styles to keep you moving.</p>
+
+
           </div>
         </div>
       </div>
 </div>
 
       </div>
-      <div class="col-sm-12 col-md-6 col-lg-6 col-12 mt-3 text-end" data-aos="zoom-in" data-aos-offset="200">
-        <img src="assets/sports.jpg" class="rightimg img-fluid img-thumbnail" alt="Image">
+      <div class="col-sm-12 col-md-6 col-lg-6 col-12 mt-3 text-end " data-aos="zoom-in" data-aos-offset="200">
+        <img src="assets/sports.png" class="rightimg img-fluid img-thumbnail aboutimg" alt="Image">
       </div>
     </div>
 
@@ -171,34 +154,36 @@
 <section class="services">
   <div class="container">
     <div class="text-center my-5">
-      <h1>Our<span class="text-dark">Products</span></h1>
+      <h1><span class="text-dark">Products</span></h1>
       <hr class="w-25 m-auto">
     </div>
     <div class="row" data-aos="zoom-in-up" data-aos-offset="200">
         <div class="col-sm-12 col-md-4 col-lg-4 col-12">
             <div class="card">
               <div class="card-body">
-                <h5 class="card-title">Special title treatment</h5>
-                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                <a href="#" class="btn btn-dark">Go somewhere</a>
+                <img src="assets/blacksneaker.jpg" style="width: 400px;" class="img-fluid" alt="image">
+                
+                <p class="card-text ">Sports</p>
+                <a href="#" class="btn btn-dark">Explore</a>
+              </div>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-4 col-lg-4 col-12">
+          
+             <div class="card ">
+               <div class="card-body">
+                <img src="assets/bluesneaker.jpg"style="width: 400px;" class="img-fluid" alt="image">
+                <p class="card-text ">Wide range of sneakers</p>
+                <a href="#" class="btn btn-dark">Explore</a>
               </div>
             </div>
         </div>
         <div class="col-sm-12 col-md-4 col-lg-4 col-12">
              <div class="card">
-              <div class="card-body">
-                <h5 class="card-title">Special title treatment</h5>
-                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                <a href="#" class="btn btn-dark">Go somewhere</a>
-              </div>
-            </div>
-        </div>
-        <div class="col-sm-12 col-md-4 col-lg-4 col-12">
-             <div class="card">
-              <div class="card-body">
-                <h5 class="card-title">Special title treatment</h5>
-                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                <a href="#" class="btn btn-dark">Go somewhere</a>
+               <div class="card-body">
+                <img src="assets/creamsneaker.jpg"style="width: 400px;" class="img-fluid" alt="image">
+                <p class="card-text ">Vans</p>
+                <a href="#" class="btn btn-dark">Explore</a>
               </div>
             </div>
         </div>
@@ -210,34 +195,28 @@
      <div class="row mt-5" data-aos="zoom-in-down" data-aos-offset="200">
         <div class="col-sm-12 col-md-4 col-lg-4 col-12">
             <div class="card">
-              <div class="card-body">
-
-
-
-                <!-- <i class="fas fa-users bg-dark p-2 text-white rounded"></i> -->
-
-
-                <h5 class="card-title">Our Customers</h5>
-                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                <a href="#" class="btn btn-dark">Go somewhere</a>
+               <div class="card-body">
+                <img src="assets/shoes.jpg"style="width: 400px;" class="img-fluid" alt="image">
+                <p class="card-text ">Sports</p>
+                <a href="#" class="btn btn-dark">Explore</a>
               </div>
             </div>
         </div>
         <div class="col-sm-12 col-md-4 col-lg-4 col-12">
              <div class="card">
               <div class="card-body">
-                <h5 class="card-title">Special title treatment</h5>
-                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                <a href="#" class="btn btn-dark">Go somewhere</a>
+                <img src="assets/sneakers.jpg"style="width: 400px;" class="img-fluid" alt="image">
+                <p class="card-text ">Sports</p>
+                <a href="#" class="btn btn-dark">Explore</a>
               </div>
             </div>
         </div>
         <div class="col-sm-12 col-md-4 col-lg-4 col-12">
              <div class="card">
-              <div class="card-body">
-                <h5 class="card-title">Special title treatment</h5>
-                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                <a href="#" class="btn btn-dark">Go somewhere</a>
+               <div class="card-body">
+                <img src="assets/whitesneaker.jpg"style="width: 400px;" class="img-fluid" alt="image">
+                <p class="card-text ">Air Jordans</p>
+                <a href="#" class="btn btn-dark">Explore</a>
               </div>
             </div>
         </div>
@@ -250,7 +229,7 @@
 <section class="team my-5 text-center">
   <div class="container">
     <div class="text-center my-5" data-aos="zoom-in" data-aos-offset="200">
-      <h1>Customers<span class="text-dark">Reviews</span></h1>
+      <h1>Customer <span class="text-dark">Reviews</span></h1>
       <hr class="w-25 m-auto">
     </div>
     <div class="row">
@@ -297,32 +276,41 @@
     <div class="row">
       <div class="col-sm-12 col-md-6 col-lg-6 col-12" data-aos="zoom-out-down" data-aos-offset="150">
           <form class="row g-3">
-    <div class="col-md-6">
-      <label for="inputEmail4" class="form-label">Email</label>
+    <div class="col-md-6 tooltipclass">
+      <label for="inputEmail4" class="form-label">Email  </label>
       <input type="email" class="form-control" id="inputEmail4">
+      <span class="tooltiptext">Enter your Email</span>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-6 tooltipclass">
       <label for="inputPassword4" class="form-label">Password</label>
       <input type="password" class="form-control" id="inputPassword4">
+      <span class="tooltiptext">Enter your Password</span> 
     </div>
-    <div class="col-12">
+    <div class="col-12 tooltipclass">
       <label for="inputAddress" class="form-label">Address</label>
       <input type="text" class="form-control" id="inputAddress" placeholder="">
+      <span class="tooltiptext">Enter your Address</span> 
     </div>
-    <div class="col-md-6">
+    <div class="col-md-6 tooltipclass">
       <label for="inputCity" class="form-label">City</label>
       <input type="text" class="form-control" id="inputCity">
+      <span class="tooltiptext">Enter your City</span> 
     </div>
-    <div class="col-md-4">
+    <div class="col-md-4 tooltipclass">
       <label for="inputState" class="form-label">State</label>
+      <span class="tooltiptext">Choose State</span> 
       <select id="inputState" class="form-select">
+        
         <option selected>Choose...</option>
+
         <option>...</option>
+        
       </select>
     </div>
-    <div class="col-md-2">
+    <div class="col-md-2 tooltipclass">
       <label for="inputZip" class="form-label">Zip</label>
-      <input type="text" class="form-control" id="inputZip">
+      <input type="text" class="form-control" id="inputZip"></input>
+      <span class="tooltiptext">Enter your Zip Code</span> 
     </div>
     <div class="col-12">
       <div class="form-check">
@@ -345,17 +333,53 @@
     </div>
   </div>
 </section>
-<footer>
-<div class="container-fluid bg-dark text-white p-2 text-center fs-4">
-  Developed by
-</div>
+<footer class="bg-dark text-light pt-4 mt-5">
+  <div class="container">
+    <div class="row text-center text-md-start">
+      
+      <!-- About Section -->
+      <div class="col-md-4 mb-4">
+        <h5>About ShoeHut</h5>
+        <p class="small">
+          ShoeHut blends comfort with style to offer premium footwear at affordable prices. Step into fashion with us!
+        </p>
+      </div>
+
+      <!-- Quick Links -->
+      <div class="col-md-4 mb-4">
+        <h5>Quick Links</h5>
+        <ul class="list-unstyled">
+          <li><a href="about.html" class="text-light text-decoration-none">About</a></li>
+          <li><a href="contact.html" class="text-light text-decoration-none">Support</a></li>
+          <li><a href="products.html" class="text-light text-decoration-none">Products</a></li>
+          <li><a href="cart.html" class="text-light text-decoration-none">Cart</a></li>
+        </ul>
+      </div>
+
+      <!-- Contact Info -->
+      <div class="col-md-4 mb-4">
+        <h5>Contact Us</h5>
+        <p class="small"><i class="bi bi-telephone-fill me-2"></i> +91 98765 43210</p>
+        <p class="small"><i class="bi bi-envelope-fill me-2"></i> support@shoehut.in</p>
+        <p class="small"><i class="bi bi-geo-alt-fill me-2"></i> New Delhi, India</p>
+      </div>
+
+    </div>
+
+    <hr class="bg-light">
+
+    <div class="text-center pb-3">
+      <p class="mb-0 small">© 2025 ShoeHut. All rights reserved.</p>
+    </div>
+  </div>
 </footer>
 
 
-<!-- Bootstrap JS -->
+
+
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"></script>
-<!-- aos js -->
+
      <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
           <script>
               AOS.init();
