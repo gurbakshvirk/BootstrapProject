@@ -13,10 +13,9 @@
     <!-- <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet"> -->
 </head>
 <body>
-    <header>
 <nav class="navbar navbar-expand-lg navbar-light bg-light px-4 border-bottom fixed-top">
   <div class="container-fluid ">
-    <a class="navbar-brand fs-6 d-flex align-items-center" href="index.html">
+    <a class="navbar-brand fs-6 d-flex align-items-center" href="index.php">
   <img src="assets/classic2.png" style="height: 8vh; width: 8vh;">
   <span style="display:inline-block; width:auto; height:auto; margin-left: 5px;">ClassicCave</span>
 </a>
@@ -27,24 +26,24 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav ms-auto mb-2 mb-lg-0 fs-5 text-end">
         <li class="nav-item">
-          <a class="nav-link active text-primary" aria-current="page" href="index.html">Home</a>
+          <a class="nav-link active text-primary" aria-current="page" href="index.php">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="products.html">Products</a>
+          <a class="nav-link" href="products.php">Products</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="about.html">About</a>
+          <a class="nav-link" href="about.php">About</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="cart.html">Cart</a>
+          <a class="nav-link" href="cart.php">Cart</a>
         </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Support
           </a>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="signin.html">SignIn</a></li>
-            <li><a class="dropdown-item" href="contact.html">Contact Us</a></li>
+            <li><a class="dropdown-item" href="signin.php">SignIn</a></li>
+            <li><a class="dropdown-item" href="contact.php">Contact Us</a></li>
           </ul>
         </li>
        
@@ -52,13 +51,44 @@
     </div>
   </div>
 </nav>
-</header>
+
+<div class="container mt-5 pt-4 ">
+  <div class="row pt-4 mt-2">
+      <div class="col-sm-12 col-md-6 col-lg-6 col-12 ">
+
+        <h1>About ShoeHut</h1>
+        <p>
+          Welcome to Shoe Hut – Where Style Meets Comfort!
+          <br>
+
+          At Shoe Hut, we believe that the right pair of shoes can transform not just your outfit, but your confidence too. Founded with a passion for fashion and a commitment to quality, Shoe Hut is your go-to destination for stylish, durable, and affordable footwear for every occasion.
+
+          Whether you're stepping out for a casual stroll, preparing for a formal event, or hitting the gym, our wide selection of men's shoes offers the perfect fit for your lifestyle. We pride ourselves on curating a diverse collection that blends comfort, functionality, and the latest trends in footwear fashion.
+          <br>
+          <h2>Why Choose Shoe Hut?</h2>
+          <br>
+          Trendy Designs – Stay ahead of fashion with our regularly updated collections.
+          <br>
+          Premium Quality – Every pair is made with care, using materials that last.
+          <br>
+          Affordable Prices – Great style doesn’t have to come with a high price tag.
+          <br>
+          Customer First – Your satisfaction is our priority. We ensure smooth shopping and hassle-free returns.
+          <br>
+          Join thousands of happy customers who have found their perfect pair at Shoe Hut. Discover your next favorite shoes with us today!
+        </p>
+      </div>
+
+      <div class="col-sm-12 col-md-6 col-lg-6 col-12 p-4"data-aos="flip-left"
+         data-aos-easing="ease-out-cubic"
+         data-aos-duration="2000">
+         <img src="assets/secondary.jpg" class="img-fluid img-thumbnail p-2" alt="">
+      </div>
+  </div>
+</div>
 
 
-
-
-</body>
-<footer class="bg-dark text-light pt-4 mt-5 fixed-bottom">
+<footer class="bg-dark text-light pt-4 mt-5">
   <div class="container">
     <div class="row text-center text-md-start">
       
@@ -74,10 +104,10 @@
       <div class="col-md-4 mb-4">
         <h5>Quick Links</h5>
         <ul class="list-unstyled">
-          <li><a href="about.html" class="text-light text-decoration-none">About</a></li>
-          <li><a href="contact.html" class="text-light text-decoration-none">Support</a></li>
-          <li><a href="products.html" class="text-light text-decoration-none">Products</a></li>
-          <li><a href="cart.html" class="text-light text-decoration-none">Cart</a></li>
+          <li><a href="about.php" class="text-light text-decoration-none">About</a></li>
+          <li><a href="contact.php" class="text-light text-decoration-none">Support</a></li>
+          <li><a href="products.php" class="text-light text-decoration-none">Products</a></li>
+          <li><a href="cart.php" class="text-light text-decoration-none">Cart</a></li>
         </ul>
       </div>
 

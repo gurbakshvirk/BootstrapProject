@@ -19,7 +19,7 @@
   
 <nav class="navbar navbar-expand-lg navbar-light bg-light px-4 border-bottom fixed-top">
   <div class="container-fluid ">
-    <a class="navbar-brand fs-6 d-flex align-items-center" href="index.html">
+    <a class="navbar-brand fs-6 d-flex align-items-center" href="index.php">
   <img src="assets/classic2.png" style="height: 8vh; width: 8vh;">
   <span style="display:inline-block; width:auto; height:auto; margin-left: 5px;">ClassicCave</span>
 </a>
@@ -30,24 +30,24 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav ms-auto mb-2 mb-lg-0 fs-5 text-end">
         <li class="nav-item">
-          <a class="nav-link active text-primary" aria-current="page" href="index.html">Home</a>
+          <a class="nav-link active text-primary" aria-current="page" href="index.php">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="products.html">Products</a>
+          <a class="nav-link" href="products.php">Products</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="about.html">About</a>
+          <a class="nav-link" href="about.php">About</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="cart.html">Cart</a>
+          <a class="nav-link" href="cart.php">Cart</a>
         </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Support
           </a>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="signin.html">SignIn</a></li>
-            <li><a class="dropdown-item" href="contact.html">Contact Us</a></li>
+            <li><a class="dropdown-item" href="signin.php">SignIn</a></li>
+            <li><a class="dropdown-item" href="contact.php">Contact Us</a></li>
           </ul>
         </li>
        
@@ -147,10 +147,10 @@
       <div class="col-md-4 mb-4">
         <h5>Quick Links</h5>
         <ul class="list-unstyled">
-          <li><a href="about.html" class="text-light text-decoration-none">About</a></li>
-          <li><a href="contact.html" class="text-light text-decoration-none">Support</a></li>
-          <li><a href="products.html" class="text-light text-decoration-none">Products</a></li>
-          <li><a href="cart.html" class="text-light text-decoration-none">Cart</a></li>
+          <li><a href="about.php" class="text-light text-decoration-none">About</a></li>
+          <li><a href="contact.php" class="text-light text-decoration-none">Support</a></li>
+          <li><a href="products.php" class="text-light text-decoration-none">Products</a></li>
+          <li><a href="cart.php" class="text-light text-decoration-none">Cart</a></li>
         </ul>
       </div>
 
