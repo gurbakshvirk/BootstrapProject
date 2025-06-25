@@ -52,6 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['login'])) {
     $stmt->close();
 }
 ?>
+
 <!-- Login Form -->
 <form class="px-4 py-3 mt-5 pt-5" method="POST">
     <h2>Login</h2>
