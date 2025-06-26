@@ -1,5 +1,7 @@
 
 <?php
+
+session_start();
 $hostname = "localhost";
 $username = "root";
 $password = "";
@@ -20,21 +22,44 @@ if (isset($_POST['add_category_btn'])) {
     $popular = isset($_POST['popular']) ? '1' : '0';
 
     $image = $_FILES['image']['name'];
-    $path = "./uploads" . $image;
+    $image_tmp = $_FILES['image']['tmp_name'];
+
+    $path = "catuploads/" . $image;
     $image_ext = pathinfo($image, PATHINFO_EXTENSION);
     $filename = time() . '.' . $image_ext;
-
-    // $cate_query = "INSERT INTO categories (name, slug, description, meta_title, meta_description, meta_keywords, status, popular, image)
-    //                VALUES ('$name','$slug','$description','$meta_title','$meta_description','$meta_keywords','$status','$popular','$filename')";
-    // $cate_query_run = mysqli_query($con, $cate_query);
-
+    $upload_path = "catuploads/" . $filename;
     $cate_query = "INSERT INTO `categories` ( `name`, `slug`, `description`, `meta_title`, `meta_description`, `meta_keywords`, `status`, `popular`, `image`, `created_at`) 
-    VALUES ( '$name', '$slug', '$description', '$meta_title', '$meta_description', '$meta_keywords', '$status','$popular', '$filename', current_timestamp())";
-    if($conn->query($cate_query)==true){
+                    VALUES ( '$name', '$slug', '$description', '$meta_title', '$meta_description', '$meta_keywords', '$status','$popular', '$filename', current_timestamp())";
+//  if ($conn->query($cate_query) === TRUE) {
+//         if (move_uploaded_file($image_tmp, $upload_path)) {
+//             $_SESSION['message'] = "Category Added Successfully with image.";
+//         } else {
+//             $_SESSION['message'] = "Category added, but image upload failed!";
+//         }
+//         header("Location: add_categories.php");
+//         exit();
+//     } else {
+//         $_SESSION['message'] = "Database insertion failed!";
+//         header("Location: add_categories.php");
+//         exit();
+//     }
+// }
+ $cate_query_run = mysqli_query($conn, $cate_query);
+
+    if ($cate_query_run) {
+    if (move_uploaded_file($image_tmp, $upload_path)) {
+        $_SESSION['message'] = "category Added Successfully";
+    } else {
+        $_SESSION['message'] = "category saved, but image upload failed!";
+    }
+    header("Location: add_categories.php");
+    exit();
+    } else {
+        $_SESSION['message'] = "Something went wrong";
         header("Location: add_categories.php");
         exit();
     }
-}
+  }
 ?>
 
 <!DOCTYPE html>
@@ -52,7 +77,85 @@ if (isset($_POST['add_category_btn'])) {
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 </head>
 <body>
-  <?php include 'components/admin_navbar.php';?>
+     <nav class="navbar navbar-expand-lg navbar-light bg-light px-4 border-bottom fixed-top">
+  <div class="container-fluid ">
+    <a class="navbar-brand fs-6 d-flex align-items-center" href="admin_dashboard.php">
+  <img src="assets/classic2.png" style="height: 8vh; width: 8vh;">
+  <span style="display:inline-block; width:auto; height:auto; margin-left: 5px;">ClassicCave</span>
+</a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0 fs-5 text-end">
+        <li class="nav-item">
+          <a class="nav-link active text-primary" aria-current="page" href="index.php">Home</a>
+        </li>
+        <!-- <li class="nav-item">
+          <a class="nav-link" href="products.php">All Products</a>
+        </li> -->
+        <!-- <li class="nav-item">
+          <a class="nav-link" href="about.php">About</a>
+        </li> -->
+        <!-- <li class="nav-item">
+          <a class="nav-link" href="cart.php">Cart</a>
+        </li> -->
+<?php if (isset($_SESSION['user_id']) && $_SESSION['user_role'] === 'admin'): ?>
+  <li class="nav-item">
+    <a class="nav-link" href="admin_dashboard.php">Dashboard</a>
+  </li>
+  <li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+      Products
+    </a>
+    <ul class="dropdown-menu">
+      <li><a class="dropdown-item" href="add_product.php">Add Product</a></li>
+      <li><a class="dropdown-item" href="added_products.php">View Products</a></li>
+    </ul>
+  </li>
+  <li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+      Categories</a>
+    <ul class="dropdown-menu">
+      <li><a class="dropdown-item" href="add_categories.php">Add Category</a></li>
+      <li><a class="dropdown-item" href="view_categories.php">View Categories</a></li>
+    </ul>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="orders.php">Orders Management</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="messages.php">Customer Messages</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="users.php">User Management</a>
+  </li>
+  <li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+      Reports</a>
+    <ul class="dropdown-menu">
+      <li><a class="dropdown-item" href="sales_report.php">Sales Reports</a></li>
+      <li><a class="dropdown-item" href="stock_alerts.php">Stock Alerts</a></li>
+      <li><a class="dropdown-item" href="performance.php">Performance Analytics</a></li>
+    </ul>
+  </li>
+  <li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle text-success" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+      <?= ($_SESSION['user_name']); ?>
+    </a>
+    <ul class="dropdown-menu">
+      <li><a class="dropdown-item text-danger" href="logout.php">Logout</a></li>
+    </ul>
+  </li>
+<?php endif; ?>
+
+
+       
+      </ul>
+    </div>
+  </div>
+</nav>
 
 
     <div class="container mt-5 pt-5">
@@ -63,68 +166,68 @@ if (isset($_POST['add_category_btn'])) {
                     <form action="add_categories.php" method="POST" enctype="multipart/form-data">
                         <div class="row">
 
-                            <!-- Category Name input -->
+                         
                             <div class="col-md-6">
                                 <label for="">Name</label>
                                 <input type="text" name="name" placeholder="Enter Category Name" class="form-control">
                             </div>
 
-                            <!-- Slug input (used in URLs) -->
+                         
                             <div class="col-md-6">
                                 <label for="">Slug</label>
                                 <input type="text" name="slug" placeholder="Enter slug" class="form-control">
                             </div>
 
-                            <!-- Description textarea -->
+                          
                             <div class="col-md-12">
                                 <label for="">Description</label>
                                 <textarea rows="3" name="description" placeholder="Enter description" class="form-control"></textarea>
                             </div>
 
-                            <!-- Image upload input -->
+                          
                             <div class="col-md-12">
                                 <label for="">Upload Image</label>
                                 <input type="file" name="image" class="form-control">
                             </div>
 
-                            <!-- Meta Title textarea (for SEO) -->
+                          
                             <div class="col-md-12">
                                 <label for="">Meta title</label>
                                 <textarea rows="3" name="meta_title" placeholder="Enter meta title" class="form-control"></textarea>
                             </div>
 
-                            <!-- Meta Description textarea (for SEO) -->
+                            
                             <div class="col-md-12">
                                 <label for="">Meta Description</label>
                                 <textarea rows="3" name="meta_description" placeholder="Enter meta description" class="form-control"></textarea>
                             </div>
 
-                            <!-- Meta Keywords textarea (for SEO) -->
+                          
                             <div class="col-md-12">
                                 <label for="">Meta Keywords</label>
                                 <textarea rows="3" name="meta_keywords" placeholder="Enter meta keywords" class="form-control"></textarea>
                             </div>
 
-                            <!-- Status checkbox (checked = active, unchecked = inactive) -->
+                            
                             <div class="col-md-6">
                                 <label for="">Status</label><br>
                                 <input type="checkbox" name="status">
                             </div>
 
-                            <!-- Popular checkbox (optional: if checked, highlight this category) -->
+                            
                             <div class="col-md-6">
                                 <label for="">Popular</label><br>
                                 <input type="checkbox" name="popular">
                             </div>
 
-                            <!-- Submit button -->
+                          
                             <div class="col-md-12">
                                 <button type="submit" class="btn btn-primary" name="add_category_btn">Save</button>
                             </div>
 
-                        </div> <!-- End of row -->
+                        </div> 
                     </form>
-                </div> <!-- End of card-body -->
+                </div>
     </div>
 
 

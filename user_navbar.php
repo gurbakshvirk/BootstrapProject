@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light px-4 border-bottom fixed-top">
   <div class="container-fluid ">
     <a class="navbar-brand fs-6 d-flex align-items-center" href="..//index.php">
- <img src="user_files/user_components/classic2.png" style="height: 8vh; width: 8vh;">
+ <img src="assets/classic2.png" style="height: 8vh; width: 8vh;">
   <span style="display:inline-block; width:auto; height:auto; margin-left: 5px;">ClassicCave</span>
 </a>
 
@@ -15,7 +15,7 @@
           <a class="nav-link" aria-current="page" href="./index.php">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="user_files/products.php">Products</a>
+          <a class="nav-link" href="products.php">Products</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="about.php">About</a>
@@ -31,7 +31,7 @@
     <ul class="dropdown-menu">
       <!-- <li><a class="dropdown-item" href="profile.php">Profile</a></li> -->
       <?php if ($_SESSION['user_role'] === 'admin'): ?>
-        <li><a class="dropdown-item" href="admin_files/admin_dashboard.php">Admin Panel</a></li>
+        <li><a class="dropdown-item" href="admin_dashboard.php">Admin Panel</a></li>
       <?php endif; ?>
       <li><hr class="dropdown-divider"></li>
       <li><a class="dropdown-item text-danger" href="logout.php">Logout</a></li>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Shoe Hut</title>
+    <title>classiccave Hut</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="styles.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -56,16 +56,16 @@
   <div class="row pt-4 mt-2">
       <div class="col-sm-12 col-md-6 col-lg-6 col-12 ">
 
-        <h1>About ShoeHut</h1>
+        <h1>About classiccaveHut</h1>
         <p>
-          Welcome to Shoe Hut – Where Style Meets Comfort!
+          Welcome to classiccave Hut – Where Style Meets Comfort!
           <br>
 
-          At Shoe Hut, we believe that the right pair of shoes can transform not just your outfit, but your confidence too. Founded with a passion for fashion and a commitment to quality, Shoe Hut is your go-to destination for stylish, durable, and affordable footwear for every occasion.
+          At classiccave Hut, we believe that the right pair of classiccaves can transform not just your outfit, but your confidence too. Founded with a passion for fashion and a commitment to quality, classiccave Hut is your go-to destination for stylish, durable, and affordable footwear for every occasion.
 
-          Whether you're stepping out for a casual stroll, preparing for a formal event, or hitting the gym, our wide selection of men's shoes offers the perfect fit for your lifestyle. We pride ourselves on curating a diverse collection that blends comfort, functionality, and the latest trends in footwear fashion.
+          Whether you're stepping out for a casual stroll, preparing for a formal event, or hitting the gym, our wide selection of men's classiccaves offers the perfect fit for your lifestyle. We pride ourselves on curating a diverse collection that blends comfort, functionality, and the latest trends in footwear fashion.
           <br>
-          <h2>Why Choose Shoe Hut?</h2>
+          <h2>Why Choose classiccave Hut?</h2>
           <br>
           Trendy Designs – Stay ahead of fashion with our regularly updated collections.
           <br>
@@ -75,7 +75,7 @@
           <br>
           Customer First – Your satisfaction is our priority. We ensure smooth shopping and hassle-free returns.
           <br>
-          Join thousands of happy customers who have found their perfect pair at Shoe Hut. Discover your next favorite shoes with us today!
+          Join thousands of happy customers who have found their perfect pair at classiccave Hut. Discover your next favorite classiccaves with us today!
         </p>
       </div>
 
