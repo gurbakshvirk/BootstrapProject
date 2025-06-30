@@ -8,29 +8,11 @@ $dbname =  "ccbs";
 
 
 $conn = new mysqli($hostname, $username, $password , $dbname);
-$sql ="select * from products";
+$sql ="select * from products where status='1'";
 $result = mysqli_query($conn, $sql);
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
-// while ($row = mysqli_fetch_assoc($result)) {
-//     $_SESSION['id'] = $row['id'];
-//     $_SESSION['category_id'] = $row['category_id'];
-//     $_SESSION['name'] = $row['name'];
-//     $_SESSION['slug'] = $row['slug'];
-//     $_SESSION['small_description'] = $row['small_description'];
-//     $_SESSION['description'] = $row['description'];
-//     $_SESSION['original_price'] = $row['original_price'];
-//     $_SESSION['selling_price'] = $row['selling_price'];
-//     $_SESSION['images'] = $row['images'];
-//     $_SESSION['qty'] = $row['qty'];
-//     $_SESSION['status'] = $row['status'];
-//     $_SESSION['trending'] = $row['trending'];
-//     $_SESSION['meta_title'] = $row['meta_title'];
-//     $_SESSION['meta_description'] = $row['meta_description'];
-//     $_SESSION['meta_keywords'] = $row['meta_keywords'];
-    
-// }
 ?>
 
 
@@ -112,6 +94,7 @@ if ($conn->connect_error) {
 <div class="container mt-5 pt-5 ">
     <h1>All Products</h1>
 
+
     
       <div class="row mt-5 " style="display: flex; flex-wrap: wrap; justify-content: center;">
 <?php while ($row = mysqli_fetch_assoc($result)) { ?>
@@ -121,23 +104,13 @@ if ($conn->connect_error) {
       <div class="card-body">
         <h3 class="card-title"><?= $row['name']; ?></h3>
         <div class="container"></div>
-        <!-- <p class="card-text">Category ID: <?= $row['category_id']; ?></p> -->
-        <!-- <p class="card-text">Product ID: <?= $row['id']; ?></p> -->
-        <!-- <p class="card-text">Slug: <?= $row['slug']; ?></p> -->
         <p class="card-text">Small Description: <?= $row['small_description']; ?></p>
         <p class="card-text">Description: <?= $row['description']; ?></p>
         <p class="card-text">Original Price: ₹<?= $row['original_price']; ?></p>
         <p class="card-text">Selling Price: ₹<?= $row['selling_price']; ?></p>
         <p class="card-text">Quantity: <?= $row['qty']; ?></p>
-        <!-- <p class="card-text">Status: <?= $row['status'] ? 'Active' : 'Inactive'; ?></p> -->
-        <!-- <p class="card-text">Trending: <?= $row['trending'] ? 'Yes' : 'No'; ?></p> -->
-        <!-- <p class="card-text">Meta Title: <?= $row['meta_title']; ?></p> -->
-        <!-- <p class="card-text">Meta Description: <?= $row['meta_description']; ?></p> -->
-        <!-- <p class="card-text">Meta Keywords: <?= $row['meta_keywords']; ?></p> -->
         <div class="d-flex justify-content-between mt-3">
-          <!-- <a href="#" class="btn btn-primary btn-sm">See Product</a>
-          <a href="#" class="btn btn-warning btn-sm">Edit Product</a>
-          <a href="#" class="btn btn-danger btn-sm">Delete Product</a> -->
+    
           <a href="#" class="btn btn-primary btn-sm">See Product</a>
         </div>
       </div>
@@ -146,11 +119,8 @@ if ($conn->connect_error) {
 <?php } ?>
 </div>
 
-     
-
 </div>
-    
-
+  
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"></script>
 </body>

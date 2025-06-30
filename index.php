@@ -1,18 +1,59 @@
 <?php
 session_start();
+// if (!isset($_SESSION['status'])) {
+//     $_SESSION['status'] === '0'; // or any default value you want
+// }
+
 $hostname = "localhost";
 $username = "root";
 $password = "";
+$dbname =  "ccbs";
 
 
-$conn = new mysqli($hostname, $username, $password);
+$conn = new mysqli($hostname, $username, $password , $dbname);
+$sql ="select * from products where status='1'";
+$sql2="select * from categories where status='1'";
+$sql3 = "SELECT * FROM products WHERE trending='1'";
 
 
+// $sql2 = "SELECT * FROM categories WHERE status='1'";
+$result = mysqli_query($conn, $sql);
 if ($conn->connect_error) {
   die("Connection failed: " . $conn->connect_error);
 }
-echo "Connected successfully";
 
+$result2 = mysqli_query($conn, $sql2);
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+$result3 = mysqli_query($conn, $sql3);
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+
+
+
+
+echo "Connected successfully";
+// <?php
+// session_start();
+// $hostname = "localhost";
+// $username = "root";
+// $password = "";
+// $dbname =  "ccbs";
+
+$status = isset($_POST['status']) ? '1' : '0';
+$trending = isset($_POST['trending']) ? '1' : '0';
+// $conn = new mysqli($hostname, $username, $password , $dbname);
+
+
+
+
+// if ($conn->connect_error) {
+//     die("Connection failed: " . $conn->connect_error);
+// }
 
 ?>
 <html>
@@ -110,8 +151,9 @@ echo "Connected successfully";
   </button>
 </div>
 </header>
+<!-- about and right side image -->
 <section class="about my-5">
-  <div class="container ">
+<div class="container ">
 
 
     <div class="text-center my-5">
@@ -146,7 +188,7 @@ echo "Connected successfully";
           <div class="accordion-body">
             <p>Discover the perfect balance of comfort and street-ready style with our men’s casual Clothes. Whether you're heading out for a coffee run or a weekend hangout, ClassicCave’s casual range keeps your vibe effortless and your steps light.
 
-</p>
+          </p>
           </div>
         </div>
       </div>
@@ -179,6 +221,7 @@ echo "Connected successfully";
 </div>
 
       </div>
+      <!-- right side image -->
       <div class="col-sm-12 col-md-6 col-lg-6 col-12 mt-3 text-end " data-aos="zoom-in" data-aos-offset="200">
         <img src="assets/newslide3.jpg" class="rightimg img-fluid img-thumbnail aboutimg" alt="Image">
       </div>
@@ -187,50 +230,99 @@ echo "Connected successfully";
   </div>
 </section>
 
-
+<!-- Products -->
 <section class="services">
   <div class="container">
     <div class="text-center my-5">
       <h1><span class="text-dark">Products</span></h1>
       <hr class="w-25 m-auto">
+
     </div>
+    <!-- php for products -->
+      <div class="row gy-4">
+        <?php while ($row = mysqli_fetch_assoc($result)) { ?>
+          <div class="col-12 col-sm-6 col-md-4 col-lg-3 d-flex align-items-stretch">
+            <div class="product-card w-100">
+              <div class="product-content">
+                <img src="uploads/<?= $row['images']; ?>" class="product-image img-fluid" alt="Product">
+                <p class="product-title mt-2"><?= $row['name']; ?></p>
+                <p><?= $row['small_description']; ?></p>
+                <p>Original Price: ₹<?= $row['original_price']; ?></p>
+                <p>Selling Price: ₹<?= $row['selling_price']; ?></p>
+                <!-- <p>Quantity: <?= $row['qty']; ?></p> -->
+                <a href="#" class="btn btn-dark">Explore</a>
+              </div>
+            </div>
+          </div>
+        <?php } ?>
+      </div>
+     </div>
+  </div>
+</section>
 
-    <div class="row" data-aos="zoom-in-up" data-aos-offset="200">
-        <div class="col-sm-12 col-md-4 col-lg-4 col-12">
-            <div class="card">
-              <div class="card-body">
-                <img src="assets/jeans.jpg" style="width: 400px;" class="img-fluid" alt="image">
-                
-                <p class="card-text ">Jeans</p>
-                <a href="#" class="btn btn-dark">Explore</a>
-              </div>
-            </div>
-        </div>
-        <div class="col-sm-12 col-md-4 col-lg-4 col-12">
-          
-             <div class="card ">
-               <div class="card-body">
-                <img src="assets/suit.jpg"style="width: 400px;" class="img-fluid" alt="image">
-                <p class="card-text ">Suits</p>
-                <a href="#" class="btn btn-dark">Explore</a>
-              </div>
-            </div>
-        </div>
-        <div class="col-sm-12 col-md-4 col-lg-4 col-12">
-             <div class="card">
-               <div class="card-body">
-                <img src="assets/shirt-tucked.jpg"style="width: 400px;" class="img-fluid" alt="image">
-                <p class="card-text ">Shirts</p>
-                <a href="#" class="btn btn-dark">Explore</a>
-              </div>
-            </div>
-        </div>
+<!-- trending products -->
+<section class="services">
+  <div class="container">
+    <div class="text-center my-5">
+      <h1><span class="text-dark">Trending Products</span></h1>
+      <hr class="w-25 m-auto">
     </div>
+    <!-- php for  trending products -->
+      <div class="row gy-4">
+        <?php while ($row3 = mysqli_fetch_assoc($result3)) { ?>
+          <div class="col-12 col-sm-6 col-md-4 col-lg-3 d-flex align-items-stretch">
+            <div class="product-card w-100">
+              <div class="product-content">
+                <img src="uploads/<?= $row3['images']; ?>" class="product-image img-fluid" alt="Product">
+                <p class="product-title mt-2"><?= $row3['name']; ?></p>
+                <p><?= $row3['small_description']; ?></p>
 
 
+                <p>Original Price: ₹<?= $row3['original_price']; ?></p>
+                <p>Selling Price: ₹<?= $row3['selling_price']; ?></p>
+                <!-- <p>Quantity: <?= $row3['qty']; ?></p> -->
+                <a href="view_single_product.php<?= $id['id']; ?>" class="btn btn-dark">Explore</a>
+              </div>
+            </div>
+          </div>
+        <?php } ?>
+
+      </div>
+      </div>
+  </div>
+</section>
 
 
-     <div class="row mt-5" data-aos="zoom-in-down" data-aos-offset="200">
+<!-- categories -->
+ <section class="services">
+  <div class="container">
+    <div class="text-center my-5">
+      <h1><span class="text-dark">Categories</span></h1>
+      <hr class="w-25 m-auto">
+
+    </div>
+    <!-- php for categories -->
+      <div class="row gy-4">
+        <?php while ($row2 = mysqli_fetch_assoc($result2)) { ?>
+          <div class="col-12 col-sm-6 col-md-4 col-lg-3 d-flex align-items-stretch">
+            <div class="product-card w-100">
+              <div class="product-content">
+                <img src="catuploads/<?= $row2['image']; ?>" class="product-image img-fluid" alt="Product">
+                <p class="product-title mt-2"><?= $row2['name']; ?></p>
+                <p><?= $row2['description']; ?></p>
+                <!-- <p>Quantity: <?= $row2['qty']; ?></p> -->
+                <a href="#" class="btn btn-dark">Explore</a>
+              </div>
+            </div>
+          </div>
+        <?php } ?>
+      </div>
+     </div>
+  </div>
+</section>
+
+
+     <!-- <div class="row mt-5" data-aos="zoom-in-down" data-aos-offset="200">
         <div class="col-sm-12 col-md-4 col-lg-4 col-12">
             <div class="card">
                <div class="card-body">
@@ -258,12 +350,13 @@ echo "Connected successfully";
               </div>
             </div>
         </div>
-    </div>
-  </div>
+    </div> -->
+  
 
 
   
-</section>
+
+<!-- Reviews -->
 <section class="team my-5 text-center">
   <div class="container">
     <div class="text-center my-5" data-aos="zoom-in" data-aos-offset="200">

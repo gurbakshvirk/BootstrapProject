@@ -34,11 +34,7 @@ $check_email_sql = "SELECT id FROM users WHERE email = ?";
         die("❌ This email is already registered.");
     }
     $stmt->close();
-
-// $sql = "INSERT INTO MyGuests (firstname, lastname, email)
-// VALUES ('John', 'Doe', 'john@example.com')";
-
-
+    
 $sql = "INSERT INTO `users` ( `name`, `email`, `password`, `cpassword`,`role`, `created_at`)
  VALUES ( '$name', '$email', '$password', '$cpassword', 'user', current_timestamp())";
 //  mysqli_connect();

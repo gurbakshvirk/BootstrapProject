@@ -68,7 +68,7 @@ body{
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background: url(assets/Image.jpg) no-repeat;
+  background: url(assets/loginimg.jpg) no-repeat;
   background-size: cover;
   background-position: center;
 }
