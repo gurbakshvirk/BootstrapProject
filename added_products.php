@@ -105,7 +105,7 @@ if (isset($_POST['edit_product_btn'])) {
         <div class="d-flex justify-content-between mt-3">
           <a href="#" class="btn btn-primary btn-sm">See Product</a>
           <a href="edit_product.php?id=<?= $row['id']; ?>" class="btn btn-warning btn-sm">Edit Product</a>
-          <a href="#" class="btn btn-danger btn-sm">Delete Product</a>
+          <a href="delete_products.php?id=<?= $row['id']; ?>" class="btn btn-danger btn-sm">Delete Product</a>
         </div>
       </div>
     </div>

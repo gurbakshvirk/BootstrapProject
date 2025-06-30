@@ -270,8 +270,9 @@ $trending = isset($_POST['trending']) ? '1' : '0';
     <!-- php for  trending products -->
       <div class="row gy-4">
         <?php while ($row3 = mysqli_fetch_assoc($result3)) { ?>
-          <div class="col-12 col-sm-6 col-md-4 col-lg-3 d-flex align-items-stretch">
-            <div class="product-card w-100">
+          <div class="col-12 col-sm-6 col-md-4 col-lg-3 d-flex">
+            <div class="product-card w-100 d-flex flex-column">
+
               <div class="product-content">
                 <img src="uploads/<?= $row3['images']; ?>" class="product-image img-fluid" alt="Product">
                 <p class="product-title mt-2"><?= $row3['name']; ?></p>

@@ -1,6 +1,15 @@
 <?php
-
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 session_start();
+
+
+
+
+
+
+
+
 $hostname = "localhost";
 $username = "root";
 $password = "";
@@ -9,85 +18,48 @@ $dbname = "CCBS";
 
 $conn = new mysqli($hostname, $username, $password, $dbname);
 
-function getAll($table) {
-    global $conn;
-    return mysqli_query($conn, "SELECT * FROM $table");
-}
+
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
-if(!isset($_GET['id'])){
-    $_SESSION['message'] = "Invalid Category ID";
-    header("Location: added_categories.php");
-    exit();
-}
-
-$category_id = $_GET['id'];
-$sql = "SELECT * FROM categories WHERE id = '$category_id'";
+$id= $_GET['id'];
+$category_id = $id;
+$sql = "SELECT * FROM categories WHERE id = '$id'";
 $result = mysqli_query($conn, $sql);
-
-if(mysqli_num_rows($result) !== 1 ){
-    $_SESSION['message'] = "Category not found";
-    header("location: added_categories.php");
-    exit();
-}
 $category = mysqli_fetch_assoc($result);
 
-// handle update submission
 if(isset($_POST['update_category'])){
     $name = $_POST['name'];
     $slug = $_POST['slug'];
-    $popular = isset($_POST['popular']) ? '1' : '0';
-    $category_id = $_POST['category_id'];
     $description = $_POST['description'];
-    $status = isset($_POST['status']) ? '1' : '0';
     $meta_title = $_POST['meta_title'];
     $meta_description = $_POST['meta_description'];
     $meta_keywords = $_POST['meta_keywords'];
+    $status = isset($_POST['status'])? '1' : '0';
+    $popular = isset($_POST['popular'])? '1' : '0';
 
+$category_update_query = "UPDATE categories SET
 
+    name = '$name',
+    slug = '$slug',
+    description = '$description',
+    meta_title = '$meta_title',
+    meta_description = '$meta_description',
+    meta_keywords = '$meta_keywords',
+    status = '$status',
+    popular = '$popular'
+    WHERE id = '$id'";
+if(mysqli_query($conn,$category_update_query)){
 
-    // Handle image upload
-    $image = $_FILES['image']['name'];
-    if(!empty($image)){
-        $image_tmp = $_FILES['image']['tmp_name'];
-        $image_ext = pathinfo($image, PATHINFO_EXTENSION);
-        $filename = time() . '.' . $image_ext;
-        $upload_path = "catuploads/" . $filename;
-       move_uploaded_file($image_tmp, $upload_path);
-    }else{
-        $filename = $_POST['image']; // Keep the old image if no new image is uploaded
-    }
-    $update_query = "UPDATE categories SET
-        -- category_id = '$category_id',
-        name = '$name',
-        slug = '$slug',
-        description = '$description',
-        image = '$filename',
-        status = '$status',
-        popular = '$popular',
-        meta_title = '$meta_title',
-        meta_keywords = '$meta_keywords',
-        meta_description = '$meta_description'
-        WHERE id = '$category_id'";
-
-
-
-    if(mysqli_query($conn, $update_query)){
-    $_SESSION['message'] = "Category Updated Successfully";
+    $_SESSION['message'] = "Category updated Sucessfully!";
     header("Location: added_categories.php");
     exit();
-} else {
-    $_SESSION['message'] = "Update failed: " . mysqli_error($conn);
 }
-
-    // Redirect to the categories page with a success message
-    // $_SESSION['message'] = "Category Updated Successfully";
-    // header("Location: added_categories.php");
-    // exit();
-    
+else {
+        $_SESSION['message'] = "Update failed!";
     }
-    ?>
+}
+?>
 
     <!DOCTYPE html>
 <html lang="en">
@@ -110,6 +82,20 @@ if(isset($_POST['update_category'])){
         <a href="admin_dashboard.php" style="text-decoration: none; color: black;">Back</a>
     </button>
 </div>
+
+<?php if (isset($_SESSION['message'])): ?>
+  <div class="container mt-4">
+    <div class="alert alert-<?= $_SESSION['msg_type']; ?> alert-dismissible fade show" role="alert">
+      <?= $_SESSION['message']; ?>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  </div>
+  <?php
+    unset($_SESSION['message']);
+    unset($_SESSION['msg_type']);
+  ?>
+<?php endif; ?>
+
 
 
 
@@ -182,7 +168,7 @@ if(isset($_POST['update_category'])){
 
                           
                             <div class="col-md-12">
-                                <input type="hidden" name="image" value="<?= $category['image']; ?>">
+                                <!-- <input type="hidden" name="image" value="<?= $category['image']; ?>"> -->
                                 <button type="submit" name="update_category" class="btn btn-primary">Update Category</button>
                             </div>
 

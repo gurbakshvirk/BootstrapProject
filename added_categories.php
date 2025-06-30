@@ -83,10 +83,7 @@ if (isset($_POST['edit_category_btn'])) {
 //       </div>
 //     </div>
 //   </div>
-// <?php  ?> -->
-
-?>
-
+-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -95,23 +92,52 @@ if (isset($_POST['edit_category_btn'])) {
     <title>Added Categories</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="styles.css">
+
+    <style>
+      .product-image {
+  height: 250px;
+  width: 100%;
+  object-fit: contain;
+  background-color: #f8f9fa;
+  padding: 10px;
+}
+
+.card-body {
+  font-size: 0.95rem;
+}
+
+.card-title {
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.card-text {
+  margin-bottom: 5px;
+  word-wrap: break-word;
+}
+
+.btn-sm {
+  padding: 4px 8px;
+  font-size: 0.85rem;
+}
+
+    </style>
 </head>
 <body>
-<header>
+
 <div class="container">
     <button class="back">
         <a href="admin_dashboard.php" style="text-decoration: none; color: black;">Back</a>
     </button>
 </div>
 
-</header>
 
 <div class="container mt-5 pt-5 ">
     <h1>Added Categories to DataBase By "<?= ($_SESSION['user_name']); ?>"</h1>
       <div class="row mt-5 " style="display: flex; flex-wrap: wrap; justify-content: center;">
         <?php while ($row2 = mysqli_fetch_assoc($result)) { ?>
           <div class="col-md-4 mb-4">
-            <div class="card"></div>
+           <div class="card h-100 shadow-sm">
             <img src="catuploads/<?= $row2['image']; ?>" class="card-img-top" alt="<?= $row2['name']; ?>">
             <div class="card-body">
               <h5 class="card-title"><?= $row2['name']; ?></h5>
@@ -125,9 +151,10 @@ if (isset($_POST['edit_category_btn'])) {
               <div class="d-flex justify-content-between mt-3">
                 <a href="#" class="btn btn-primary btn-sm">See Category</a>
                 <a href="edit_categories.php?id=<?= $row2['id']; ?>" class="btn btn-warning btn-sm">Edit Category</a>
-                <a href="#" class="btn btn-danger btn-sm">Delete Category</a>
+                <a href="delete_categories.php?id=<?= $row2['id']; ?>" class="btn btn-danger btn-sm">Delete Category</a>
               </div>
             </div>
+          </div>
           </div>
         <?php } ?>
       </div>
