@@ -85,14 +85,14 @@ if (isset($_POST['add_product_btn'])) {
     <h2>Add Product</h2>
 
     <?php if (isset($_SESSION['message'])): ?>
-        <div class="alert alert-info"><?= $_SESSION['message']; unset($_SESSION['message']); ?></div>
+        <!-- <div class="alert alert-info"><?= $_SESSION['message']; unset($_SESSION['message']); ?></div> -->
     <?php endif; ?>
     <form action="" method="POST" enctype="multipart/form-data">
 
         <!-- Category Dropdown -->
         <div class="mb-3">
             <label for="category_id" class="form-label">Select Category</label>
-            <select name="category_id" id="category_id" class="form-select">
+            <select name="category_id" id="category_id" class="form-select" required>
                 <option selected >Select category</option>
                 <?php
                 $categories = getAll("categories");

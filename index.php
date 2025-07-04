@@ -14,7 +14,7 @@ $conn = new mysqli($hostname, $username, $password , $dbname);
 $sql ="select * from products where status='1'";
 $sql2="select * from categories where status='1'";
 $sql3 = "SELECT * FROM products WHERE trending='1'";
-
+// $_GET = $user_id('id');
 
 // $sql2 = "SELECT * FROM categories WHERE status='1'";
 $result = mysqli_query($conn, $sql);
@@ -95,7 +95,12 @@ $trending = isset($_POST['trending']) ? '1' : '0';
           <a class="nav-link" href="about.php">About</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="cart.php">Cart</a>
+          <a class="nav-link" href="wishlist.php">Wishlist</a>
+        </li>
+        <li class="nav-item">
+          <?php if (isset($_SESSION['user_id'])): ?>
+          <a class="nav-link"  href="cart.php?id=<?=$_SESSION['user_id']?>">Cart</a>
+          <?php endif; ?>
         </li>
 <?php if (isset($_SESSION['user_id'])): ?>
   <li class="nav-item dropdown">
@@ -244,13 +249,13 @@ $trending = isset($_POST['trending']) ? '1' : '0';
           <div class="col-12 col-sm-6 col-md-4 col-lg-3 d-flex align-items-stretch">
             <div class="product-card w-100">
               <div class="product-content">
-                <img src="uploads/<?= $row['images']; ?>" class="product-image img-fluid" alt="Product">
+                <img src="uploads/<?=  $row['images'];?>" class="product-image img-fluid" alt="Product">
                 <p class="product-title mt-2"><?= $row['name']; ?></p>
                 <p><?= $row['small_description']; ?></p>
                 <p>Original Price: ₹<?= $row['original_price']; ?></p>
                 <p>Selling Price: ₹<?= $row['selling_price']; ?></p>
                 <!-- <p>Quantity: <?= $row['qty']; ?></p> -->
-                <a href="#" class="btn btn-dark">Explore</a>
+                <a href="single_product.php?id=<?= $row['id']; ?>" class="btn btn-dark">Explore</a>
               </div>
             </div>
           </div>

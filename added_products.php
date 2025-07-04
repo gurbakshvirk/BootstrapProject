@@ -13,6 +13,11 @@ $result = mysqli_query($conn, $sql);
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
+
+
+
+
+
 if (isset($_POST['edit_product_btn'])) {
     $category_id = $_POST['category_id'];
     $name = $_POST['name'];
@@ -55,6 +60,24 @@ if (isset($_POST['edit_product_btn'])) {
         exit();
     }
 }
+
+
+
+
+if (isset($_POST['delete_product'])) {
+    $category_id = $_GET['category_id'];
+  $DLT_query = "DELETE FROM products WHERE category_id = '$id'";
+    $query_run = mysqli_query($conn, $DLT_query);
+
+    if ($query_run) {
+        $_SESSION['message'] = "Product deleted, but image upload failed!";
+    header("Location: added_products.php");
+    exit();
+    } else {
+        $_SESSION['message'] = "Something went wrong";
+        header("Location: added_products.php");
+        exit();
+    }}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -105,7 +128,7 @@ if (isset($_POST['edit_product_btn'])) {
         <div class="d-flex justify-content-between mt-3">
           <a href="#" class="btn btn-primary btn-sm">See Product</a>
           <a href="edit_product.php?id=<?= $row['id']; ?>" class="btn btn-warning btn-sm">Edit Product</a>
-          <a href="delete_products.php?id=<?= $row['id']; ?>" class="btn btn-danger btn-sm">Delete Product</a>
+          <a href="delete_products.php?id=<?= $row['id']; ?>" class="btn btn-danger btn-sm" vlaue="delete_product">Delete Product</a>
         </div>
       </div>
     </div>

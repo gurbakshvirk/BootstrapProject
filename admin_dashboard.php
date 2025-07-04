@@ -53,9 +53,9 @@ if ($conn->connect_error) {
         <li class="nav-item">
           <a class="nav-link" aria-current="page" href="index.php">User Panel</a>
         </li>
-        <!-- <li class="nav-item">
-          <a class="nav-link" href="products.php">All Products</a>
-        </li> -->
+        <li class="nav-item">
+          <a class="nav-link" href="admin_view_wishlists.php">User Wishlists</a>
+        </li>
         <!-- <li class="nav-item">
           <a class="nav-link" href="about.php">About</a>
         </li> -->

@@ -12,7 +12,7 @@ if ($conn->connect_error) {
 
 if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
     $_SESSION['message'] = "Invalid Product ID!";
-    header("Location: view_product.php");
+    header("Location: index.php");
     exit();
 }
 
@@ -31,6 +31,62 @@ if (!$product) {
     header("Location: view_product.php");
     exit();
 }
+
+
+
+
+if(isset($_POST["addtocartbtn"])){
+  $user_id = $_SESSION['user_id'];
+  $product_id = $_POST['product_id'];
+  $qty = $_POST['qty'];
+  $stmt = $conn->prepare("INSERT INTO cart (user_id, product_id, quantity) VALUES (?, ?, ?)");
+  if ($stmt) {
+      $stmt->bind_param("iii", $user_id, $product_id, $qty);
+      $stmt->execute();
+      $stmt->close();
+      $_SESSION['message'] = "Product added to cart!";
+header("Location: single_product.php?id=" . $product_id);
+exit();
+
+  } else {
+      // Handle error, e.g. log or set a session message
+      $_SESSION['message'] = "Failed to add to cart.";
+  }
+}
+
+
+
+
+
+
+
+if(isset($_POST["wishlistbtn"])){
+  
+// user id
+if (isset($_SESSION['user_id'])) {
+    //  loged in
+    $user_id = $_SESSION['user_id'];
+} else {
+    // not loged in
+    header("Location: login.php");
+    exit();
+}
+$sql = "SELECT * FROM wishlist WHERE user_id = $user_id AND product_id = $product_id";
+$result = mysqli_query($conn, $sql);
+
+
+if (mysqli_num_rows($result) > 0) {
+    echo "✅ Product is already in your wishlist.";
+} else {
+    $insert_sql = "INSERT INTO wishlist (user_id, product_id, added_on) VALUES ($user_id, $product_id, NOW())";
+    if (mysqli_query($conn, $insert_sql)) {
+        echo "Product added to your wishlist!";
+    } else {
+        echo "Failed to add to wishlist.";
+    }
+}
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -70,7 +126,17 @@ if (!$product) {
 </head>
 <body>
 
+
+
+
 <div class="container py-5">
+  <?php if(isset($_SESSION['message'])): ?>
+  <div class="alert alert-success alert-dismissible fade show" role="alert">
+    <?= $_SESSION['message']; ?>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  <?php unset($_SESSION['message']); ?>
+<?php endif; ?>
   <a href="view_product.php" class="btn btn-outline-secondary mb-4">← Back to Products</a>
 
   <div class="row g-4">
@@ -104,9 +170,21 @@ if (!$product) {
       <p><strong>Full Description:</strong><br><?= nl2br($product['description']); ?></p>
 
       <button class="btn btn-primary btn-buy mt-3">Buy Now</button>
+      <form method="POST" action="">
+  <input type="hidden" name="product_id" value="<?= $product['id']; ?>">
+  <input type="hidden" name="qty" value="1"> <!-- default quantity -->
+  <button type="submit" name="addtocartbtn" class="btn btn-success btn-buy mt-3">Add to Cart</button>
+</form>
+<form action="add_to_wishlist.php" method="POST">
+    <input type="hidden" name="product_id" value="<?= $product['id']; ?>">
+    <input type="hidden" name="from" value="single_product.php?id=<?= $product['id']; ?>">
+    <button type="submit" name="wishlistbtn" class="btn btn-outline-danger">❤️ Add to Wishlist</button>
+</form>
+
     </div>
   </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>
