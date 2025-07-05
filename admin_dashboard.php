@@ -38,86 +38,57 @@ if ($conn->connect_error) {
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light px-4 border-bottom fixed-top">
-  <div class="container-fluid ">
-    <a class="navbar-brand fs-6 d-flex align-items-center" href="admin_dashboard.php">
-  <img src="assets/classic2.png" style="height: 8vh; width: 8vh;">
-  <span style="display:inline-block; width:auto; height:auto; margin-left: 5px;">ClassicCave</span>
-</a>
 
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav ms-auto mb-2 mb-lg-0 fs-5 text-end">
+<!-- Top Bar (Optional - use if you want "Welcome to Relion") -->
+<div class="w-100 py-1 border-bottom d-flex justify-content-between align-items-center px-4" style="font-size: 14px;">
+  <div><i class="bi bi-instagram"></i></div>
+  <div class="text-center">Welcome to Relion</div>
+  <div></div>
+</div>
+
+<!-- Main Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light px-4 border-bottom fixed-top">
+  <div class="container-fluid">
+
+    <!-- Left links -->
+    <div class="d-flex align-items-center">
+      <ul class="navbar-nav me-3 d-flex flex-row gap-3 fs-5">
         <li class="nav-item">
-          <a class="nav-link" aria-current="page" href="index.php">User Panel</a>
+          <a class="nav-link" href="index.php">User Panel</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="admin_view_wishlists.php">User Wishlists</a>
         </li>
-        <!-- <li class="nav-item">
-          <a class="nav-link" href="about.php">About</a>
-        </li> -->
-        <!-- <li class="nav-item">
-          <a class="nav-link" href="cart.php">Cart</a>
-        </li> -->
-<?php if (isset($_SESSION['user_id']) && $_SESSION['user_role'] === 'admin'): ?>
-  <li class="nav-item">
-    <a class="nav-link" href="admin_dashboard.php">Dashboard</a>
-  </li>
-  <!-- <li class="nav-item dropdown">
-    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-      Products
-    </a>
-    <ul class="dropdown-menu">
-      <li><a class="dropdown-item" href="add_product.php">Add Product</a></li>
-      <li><a class="dropdown-item" href="added_products.php">View Products</a></li>
-    </ul>
-  </li> -->
-  <!-- <li class="nav-item dropdown">
-    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-      Categories</a>
-    <ul class="dropdown-menu">
-      <li><a class="dropdown-item" href="add_categories.php">Add Category</a></li>
-      <li><a class="dropdown-item" href="added_categories.php">View Categories</a></li>
-    </ul>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" href="orders.php">Orders Management</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" href="messages.php">Customer Messages</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" href="users.php">User Management</a>
-  </li> -->
-  <!-- <li class="nav-item dropdown">
-    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-      Reports</a>
-    <ul class="dropdown-menu">
-      <li><a class="dropdown-item" href="sales_report.php">Sales Reports</a></li>
-      <li><a class="dropdown-item" href="stock_alerts.php">Stock Alerts</a></li>
-      <li><a class="dropdown-item" href="performance.php">Performance Analytics</a></li>
-    </ul>
-  </li> -->
-  <li class="nav-item dropdown">
-    <a class="nav-link dropdown-toggle text-success" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-      <?= ($_SESSION['user_name']); ?>
-    </a>
-    <ul class="dropdown-menu">
-      <li><a class="dropdown-item text-danger" href="logout.php">Logout</a></li>
-    </ul>
-  </li>
-<?php endif; ?>
-
-
-       
       </ul>
     </div>
+
+    <!-- Center logo -->
+    <a class="navbar-brand mx-auto d-flex flex-column align-items-center" href="admin_dashboard.php">
+      <img src="assets/classic2.png" style="height: 8vh; width: 8vh;">
+      <span class="fw-bold">ClassicCave</span>
+    </a>
+
+    <!-- Right icons -->
+    <div class="d-flex align-items-center gap-3">
+      <div>Austria | INR ₹</div>
+      <i class="bi bi-search" style="font-size: 1.2rem; cursor: pointer;"></i>
+      <i class="bi bi-person" style="font-size: 1.2rem; cursor: pointer;"></i>
+      <i class="bi bi-bag" style="font-size: 1.2rem; cursor: pointer;"></i>
+
+      <?php if (isset($_SESSION['user_id']) && $_SESSION['user_role'] === 'admin'): ?>
+        <div class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle text-success" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <?= htmlspecialchars($_SESSION['user_name']); ?>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item text-danger" href="logout.php">Logout</a></li>
+          </ul>
+        </div>
+      <?php endif; ?>
+    </div>
+
   </div>
 </nav>
-
 
 
 
