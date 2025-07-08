@@ -40,6 +40,14 @@ html, body {
   max-width: 400px;
   height: auto;
 }
+/* In your styles.css */
+/* .navbar {
+  height: 200px!important;
+} */
+/* .navbar img {
+  height: 100%; 
+  max-height: 100%;
+} */
 
 .navbar {
   display: flex;

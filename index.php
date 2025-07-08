@@ -1,48 +1,84 @@
 <?php
 session_start();
+// if (!isset($_SESSION['status'])) {
+//     $_SESSION['status'] === '0'; // or any default value you want
+// }
 
 $hostname = "localhost";
 $username = "root";
 $password = "";
 $dbname = "ccbs";
 
+
 $conn = new mysqli($hostname, $username, $password, $dbname);
+$sql = "select * from products where status='1'";
+$sql2 = "select * from categories where status='1'";
+$sql3 = "SELECT * FROM products WHERE trending='1'";
+// $_GET = $user_id('id');
+
+// $sql2 = "SELECT * FROM categories WHERE status='1'";
+$result = mysqli_query($conn, $sql);
 if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+  die("Connection failed: " . $conn->connect_error);
 }
 
-// Product Queries
-$sqlProducts = "SELECT * FROM products WHERE status='1'";
-$sqlTrending = "SELECT * FROM products WHERE trending='1'";
-$sqlCategories = "SELECT * FROM categories WHERE status='1'";
+$result2 = mysqli_query($conn, $sql2);
+if ($conn->connect_error) {
+  die("Connection failed: " . $conn->connect_error);
+}
 
-$resultProducts = mysqli_query($conn, $sqlProducts);
-$resultTrending = mysqli_query($conn, $sqlTrending);
-$resultCategories = mysqli_query($conn, $sqlCategories);
+$result3 = mysqli_query($conn, $sql3);
+if ($conn->connect_error) {
+  die("Connection failed: " . $conn->connect_error);
+}
+
+
+
+
+
+echo "Connected successfully";
+// <?php
+// session_start();
+// $hostname = "localhost";
+// $username = "root";
+// $password = "";
+// $dbname =  "ccbs";
+
+$status = isset($_POST['status']) ? '1' : '0';
+$trending = isset($_POST['trending']) ? '1' : '0';
+// $conn = new mysqli($hostname, $username, $password , $dbname);
+
+
+
+
+// if ($conn->connect_error) {
+//     die("Connection failed: " . $conn->connect_error);
+// }
 
 ?>
-<!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
   <title>ClassicCave</title>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  
-  <!-- Bootstrap and Fonts -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Miniver&family=Poppins&family=Roboto&display=swap" rel="stylesheet">
-  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="styles.css">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Miniver&family=Poppins&family=Roboto&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 
 </head>
 
 <body>
   <header>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light px-4 border-bottom fixed-top">
+     <nav class="navbar navbar-expand-lg navbar-light bg-light px-5 border-bottom fixed-top"style="height: 70px;">
       <div class="container-fluid">
 
         <!-- Mobile Logo -->
@@ -75,7 +111,7 @@ $resultCategories = mysqli_query($conn, $sqlCategories);
           <div class="d-none d-lg-flex align-items-center justify-content-center flex-shrink-0"
             style="position: absolute; left: 50%; transform: translateX(-50%);">
             <a class="navbar-brand d-flex align-items-center gap-2" href="index.php">
-              <img src="assets/classic2.png" alt="Logo" style="height: 14vh;">
+              <img src="assets/classic2.png" alt="Logo" style="height: 16vh;">
             </a>
           </div>
 
@@ -112,25 +148,30 @@ $resultCategories = mysqli_query($conn, $sqlCategories);
       </div>
     </nav>
 
-    <!-- Carousel -->
     <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
       <div class="carousel-inner">
-        <div class="carousel-item active"><img src="assets/pexel.jpg" class="d-block w-100" alt="image1"></div>
-        <div class="carousel-item"><img src="assets/shirts.jpg" class="d-block w-100" alt="image2"></div>
-        <div class="carousel-item"><img src="assets/jeans.jpg" class="d-block w-100" alt="image3"></div>
+        <div class="carousel-item active">
+          <img src="assets/pexel.jpg" class="d-block w-100" alt="image1">
+        </div>
+        <div class="carousel-item">
+          <img src="assets/shirts.jpg" class="d-block w-100" alt="image2">
+        </div>
+        <div class="carousel-item">
+          <img src="assets/jeans.jpg" class="d-block w-100" alt="image3">
+        </div>
       </div>
-      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon"></span>
+      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying"
+        data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
       </button>
-      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
-        <span class="carousel-control-next-icon"></span>
+      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying"
+        data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
       </button>
     </div>
   </header>
-
-  <!-- Remaining sections: About, Trending, Products, Categories, Reviews, Footer etc. -->
-  <!-- Keep your current layout/content below here unchanged, it's already good. -->
-
   <!-- about and right side image -->
   <section class="about my-5">
     <div class="container ">
@@ -503,16 +544,15 @@ $resultCategories = mysqli_query($conn, $sqlCategories);
 
 
 
-
- <!-- Bootstrap Bundle includes Popper.js too -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 
-<!-- AOS for animations (already good) -->
-<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-<script>
-  AOS.init();
-</script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"></script>
 
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    AOS.init();
+  </script>
 </body>
 
 </html>
