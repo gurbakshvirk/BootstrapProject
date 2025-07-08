@@ -9,8 +9,8 @@ function getAll($table) {
     global $conn;
     return mysqli_query($conn, "SELECT * FROM $table");
 }
-
 if (isset($_POST['add_product_btn'])) {
+    // ... previous fields ...
     $category_id = $_POST['category_id'];
     $name = $_POST['name'];
     $slug = $_POST['slug'];
@@ -21,40 +21,93 @@ if (isset($_POST['add_product_btn'])) {
     $qty = $_POST['qty'];
     $status = isset($_POST['status']) ? '1' : '0';
     $trending = isset($_POST['trending']) ? '1' : '0';
-    $meta_title = $_POST['meta_title'];
+     $meta_title = $_POST['meta_title'];
     $meta_description = $_POST['meta_description'];
     $meta_keywords = $_POST['meta_keywords'];
-    $images = $_FILES['images']['name'];
-    $image_tmp = $_FILES['images']['tmp_name'];
-    $path = "uploads/" . $images;
-    $image_ext = pathinfo($images, PATHINFO_EXTENSION);
-    $filename = time() . '.' . $image_ext;
-    $upload_path = "uploads/" . $filename;
-   $query =  "INSERT INTO `products` (`category_id`, `name`, `slug`, `small_description`, `description`, `original_price`, `selling_price`, `images`, `qty`, `status`, `trending`, `meta_title`, `meta_keywords`, `meta_description`) 
-                            VALUES ( '$category_id', '$name', '$slug', '$small_description', '$description', ' $original_price', '$selling_price', '$filename', '$qty', '$status', '$trending', '$meta_title', '$meta_description', '$meta_keywords')";
 
+    // Insert product
+    $insert_product_query = "INSERT INTO `products` (`category_id`, `name`, `slug`, `small_description`, `description`, `original_price`, `selling_price`, `qty`, `status`, `trending`, `meta_title`, `meta_keywords`, `meta_description`) 
+                            VALUES ('$category_id', '$name', '$slug', '$small_description', '$description', '$original_price', '$selling_price', '$qty', '$status', '$trending', '$meta_title', '$meta_keywords', '$meta_description')";
 
+    $product_query_run = mysqli_query($conn, $insert_product_query);
 
-// $cate_query_run = mysqli_query($con, $cate_query);
-    $query_run = mysqli_query($conn, $query);
+    if ($product_query_run) {
+        $product_id = mysqli_insert_id($conn); // Get the inserted product ID
 
-    if ($query_run) {
-    if (move_uploaded_file($image_tmp, $upload_path)) {
-        $_SESSION['message'] = "Product Added Successfully";
+        $image_count = count($_FILES['images']['name']);
+
+        if ($image_count > 10) {
+            $_SESSION['message'] = "You can upload up to 10 images only!";
+            header("Location: add_product.php");
+            exit();
+        }
+
+        for ($i = 0; $i < $image_count; $i++) {
+            $image_name = $_FILES['images']['name'][$i];
+            $image_tmp = $_FILES['images']['tmp_name'][$i];
+
+            $image_ext = pathinfo($image_name, PATHINFO_EXTENSION);
+            $unique_name = time() . '_' . $i . '.' . $image_ext;
+            $upload_path = "uploads/" . $unique_name;
+
+            if (move_uploaded_file($image_tmp, $upload_path)) {
+                $insert_image_query = "INSERT INTO product_images (product_id, image_path) VALUES ('$product_id', '$unique_name')";
+                mysqli_query($conn, $insert_image_query);
+            }
+        }
+
+        $_SESSION['message'] = "Product and images added successfully.";
+        header("Location: add_product.php");
+        exit();
+
     } else {
-        $_SESSION['message'] = "Product saved, but image upload failed!";
-    }
-    header("Location: add_product.php");
-    exit();
-    }
-    
-    
-    else {
-        $_SESSION['message'] = "Something went wrong";
+        $_SESSION['message'] = "Something went wrong while adding product.";
         header("Location: add_product.php");
         exit();
     }
 }
+// if (isset($_POST['add_product_btn'])) {
+//     $category_id = $_POST['category_id'];
+//     $name = $_POST['name'];
+//     $slug = $_POST['slug'];
+//     $small_description = $_POST['small_description'];
+//     $description = $_POST['description'];
+//     $original_price = $_POST['original_price'];
+//     $selling_price = $_POST['selling_price'];
+//     $qty = $_POST['qty'];
+//     $status = isset($_POST['status']) ? '1' : '0';
+//     $trending = isset($_POST['trending']) ? '1' : '0';
+//     $meta_title = $_POST['meta_title'];
+//     $meta_description = $_POST['meta_description'];
+//     $meta_keywords = $_POST['meta_keywords'];
+//     $images = $_FILES['images']['name'];
+//     $image_tmp = $_FILES['images']['tmp_name'];
+//     $path = "uploads/" . $images;
+//     $image_ext = pathinfo($images, PATHINFO_EXTENSION);
+//     $filename = time() . '.' . $image_ext;
+//     $upload_path = "uploads/" . $filename;
+//    $query =  "INSERT INTO `products` (`category_id`, `name`, `slug`, `small_description`, `description`, `original_price`, `selling_price`, `images`, `qty`, `status`, `trending`, `meta_title`, `meta_keywords`, `meta_description`) 
+//                             VALUES ( '$category_id', '$name', '$slug', '$small_description', '$description', ' $original_price', '$selling_price', '$filename', '$qty', '$status', '$trending', '$meta_title', '$meta_description', '$meta_keywords')";
+
+//     $query_run = mysqli_query($conn, $query);
+
+//     if ($query_run) {
+//     if (move_uploaded_file($image_tmp, $upload_path)) {
+//         $_SESSION['message'] = "Product Added Successfully";
+//     } else {
+//         $_SESSION['message'] = "Product saved, but image upload failed!";
+//     }
+//     header("Location: add_product.php");
+//     exit();
+//     }
+    
+    
+//     else {
+//         $_SESSION['message'] = "Something went wrong";
+//         header("Location: add_product.php");
+//         exit();
+//     }
+// }
 ?>
 
 <!DOCTYPE html>
@@ -136,10 +189,12 @@ if (isset($_POST['add_product_btn'])) {
         </div>
 
         <!-- File Upload -->
-        <div class="mb-3">
-            <label class="form-label">Product Image</label>
-            <input type="file" name="images" class="form-control" required>
-        </div>
+        <!-- File Upload -->
+<div class="mb-3">
+    <label class="form-label">Product Images (max 10)</label>
+    <input type="file" name="images[]" class="form-control" multiple required>
+</div>
+
 
         <!-- Small Description -->
         <div class="mb-3">

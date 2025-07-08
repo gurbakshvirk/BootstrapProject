@@ -30,53 +30,51 @@ if ($conn->connect_error) {
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
   <style>
-    /* --- Product Card Styling --- */
-    <style>
-  .product-card {
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border-radius: 10px;
-    overflow: hidden;
-  }
+    .product-card {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      border-radius: 10px;
+      overflow: hidden;
+    }
 
-  .product-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
-  }
+    .product-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+    }
 
-  .product-card img {
-    height: 250px;
-    object-fit: cover;
-  }
+    .product-card img {
+      height: 250px;
+      object-fit: cover;
+    }
 
-  .product-card .card-body {
-    padding: 0.8rem 1rem;
-    text-align: center;
-  }
+    .product-card .card-body {
+      padding: 0.8rem 1rem;
+      text-align: center;
+    }
 
-  .product-card .card-title {
-    font-family: 'Poppins', sans-serif;
-    font-size: 1rem;
-    font-weight: 600;
-    margin-bottom: 0.4rem;
-  }
+    .product-card .card-title {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+    }
 
-  .product-card .card-body p {
-    font-size: 0.9rem;
-    margin: 0.2rem 0;
-  }
+    .product-card .card-body p {
+      font-size: 0.9rem;
+      margin: 0.2rem 0;
+    }
 
-  h1 {
-    font-family: 'Dancing Script', cursive;
-    font-size: 2rem;
-    text-align: center;
-    margin-bottom: 1.5rem;
-  }
+    h1 {
+      font-family: 'Dancing Script', cursive;
+      font-size: 2rem;
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
 
-  .btn-sm {
-    padding: 0.3rem 0.75rem;
-    font-size: 0.8rem;
-  }
-</style>
+    .btn-sm {
+      padding: 0.3rem 0.75rem;
+      font-size: 0.8rem;
+    }
+  </style>
 </head>
 
 <body>
@@ -90,7 +88,15 @@ if ($conn->connect_error) {
       <?php while ($row = mysqli_fetch_assoc($result)) { ?>
         <div class="col-md-4 mb-4">
           <div class="card product-card h-100 shadow-sm border-0">
-            <img src="uploads/<?= $row['images']; ?>" class="card-img-top" alt="<?= $row['name']; ?>">
+            <?php
+              // Get first image from product_images table
+              $product_id = $row['id'];
+              $image_query = "SELECT image_path FROM product_images WHERE product_id = $product_id LIMIT 1";
+              $image_result = mysqli_query($conn, $image_query);
+              $image = mysqli_fetch_assoc($image_result);
+              $image_path = $image ? 'uploads/' . $image['image_path'] : 'assets/default.jpg'; // fallback image
+            ?>
+            <img src="<?= $image_path ?>" class="card-img-top" alt="<?= $row['name']; ?>">
             <div class="card-body">
               <h5 class="card-title"><?= $row['name']; ?></h5>
               <p class="text-muted mb-1">

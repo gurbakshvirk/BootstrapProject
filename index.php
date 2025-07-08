@@ -72,13 +72,13 @@ $trending = isset($_POST['trending']) ? '1' : '0';
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 
 </head>
 
 <body>
   <header>
-     <nav class="navbar navbar-expand-lg navbar-light bg-light px-5 border-bottom fixed-top"style="height: 70px;">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light px-5 border-bottom fixed-top" style="height: 70px;">
       <div class="container-fluid">
 
         <!-- Mobile Logo -->
@@ -125,23 +125,26 @@ $trending = isset($_POST['trending']) ? '1' : '0';
                 <ul class="dropdown-menu dropdown-menu-end">
                   <?php if ($_SESSION['user_role'] === 'admin'): ?>
                     <li><a class="dropdown-item" href="admin_dashboard.php">Admin Panel</a></li>
-                    <li><hr class="dropdown-divider"></li>
+                    <li>
+                      <hr class="dropdown-divider">
+                    </li>
                   <?php endif; ?>
                   <li><a class="dropdown-item" href="my_orders.php">🧾 My Orders</a></li>
                   <li><a class="dropdown-item text-danger" href="logout.php">Logout</a></li>
                 </ul>
               </div>
             <?php else: ?>
-  <div class="nav-item dropdown">
-    <a class="nav-link dropdown-toggle text-dark" href="#" id="guestDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-      Account
-    </a>
-    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="guestDropdown">
-      <li><a class="dropdown-item" href="login.php">Login</a></li>
-      <li><a class="dropdown-item" href="register.php">Create Account</a></li>
-    </ul>
-  </div>
-<?php endif; ?>
+              <div class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle text-dark" href="#" id="guestDropdown" role="button"
+                  data-bs-toggle="dropdown" aria-expanded="false">
+                  Account
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="guestDropdown">
+                  <li><a class="dropdown-item" href="login.php">Login</a></li>
+                  <li><a class="dropdown-item" href="register.php">Create Account</a></li>
+                </ul>
+              </div>
+            <?php endif; ?>
 
           </div>
         </div>
@@ -280,7 +283,16 @@ $trending = isset($_POST['trending']) ? '1' : '0';
             <div class="product-card w-100 d-flex flex-column">
 
               <div class="product-content">
-                <img src="uploads/<?= $row3['images']; ?>" class="product-image img-fluid" alt="Product">
+                <!-- <img src="uploads/<?= $row3['images']; ?>" class="product-image img-fluid" alt="Product"> -->
+                <?php
+                $product_id = $row3['id'];
+                $image_sql = "SELECT image_path FROM product_images WHERE product_id = $product_id LIMIT 1";
+                $image_result = mysqli_query($conn, $image_sql);
+                $image = mysqli_fetch_assoc($image_result);
+                $image_path = $image ? 'uploads/' . $image['image_path'] : 'assets/default.jpg';
+                ?>
+                <img src="<?= $image_path ?>" class="product-image img-fluid" alt="<?= $row['name']; ?>">
+
                 <p class="product-title mt-2"><?= $row3['name']; ?></p>
                 <p><?= $row3['small_description']; ?></p>
 
@@ -289,7 +301,7 @@ $trending = isset($_POST['trending']) ? '1' : '0';
                 <p>Selling Price: ₹<?= $row3['selling_price']; ?></p>
                 <!-- <p>Quantity: <?= $row3['qty']; ?></p> -->
                 <!-- <a href="single_product.php?id=<?= $row['id']; ?>" class="btn btn-dark">Explore</a> -->
-                                 <a href="single_product.php?id=<?= $row3['id']; ?>" class="btn btn-dark">Explore</a>
+                <a href="single_product.php?id=<?= $row3['id']; ?>" class="btn btn-dark">Explore</a>
 
               </div>
             </div>
@@ -313,7 +325,16 @@ $trending = isset($_POST['trending']) ? '1' : '0';
           <div class="col-12 col-sm-6 col-md-4 col-lg-3 d-flex align-items-stretch">
             <div class="product-card w-100">
               <div class="product-content">
-                <img src="uploads/<?= $row['images']; ?>" class="product-image img-fluid" alt="Product">
+                <!-- <img src="uploads/<?= $row['images']; ?>" class="product-image img-fluid" alt="Product"> -->
+                <?php
+                $product_id = $row['id'];
+                $image_sql = "SELECT image_path FROM product_images WHERE product_id = $product_id LIMIT 1";
+                $image_result = mysqli_query($conn, $image_sql);
+                $image = mysqli_fetch_assoc($image_result);
+                $image_path = $image ? 'uploads/' . $image['image_path'] : 'assets/default.jpg';
+                ?>
+                <img src="<?= $image_path ?>" class="product-image img-fluid" alt="<?= $row['name']; ?>">
+
                 <p class="product-title mt-2"><?= $row['name']; ?></p>
                 <p><?= $row['small_description']; ?></p>
                 <p>Original Price: ₹<?= $row['original_price']; ?></p>
@@ -544,7 +565,7 @@ $trending = isset($_POST['trending']) ? '1' : '0';
 
 
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"></script>

@@ -164,7 +164,16 @@ while ($row = mysqli_fetch_assoc($categoryChartResult)) {
     <div class="scroll-container">
       <?php while ($row = mysqli_fetch_assoc($result)) { ?>
         <div class="card scroll-item">
-          <img src="uploads/<?= $row['images']; ?>" class="card-img-top" style="height: 200px; object-fit: cover;">
+          <?php
+              // Get first image from product_images table
+              $product_id = $row['id'];
+              $image_query = "SELECT image_path FROM product_images WHERE product_id = $product_id LIMIT 1";
+              $image_result = mysqli_query($conn, $image_query);
+              $image = mysqli_fetch_assoc($image_result);
+              $image_path = $image ? 'uploads/' . $image['image_path'] : 'assets/default.jpg'; // fallback image
+            ?>
+            <img src="<?= $image_path ?>" class="card-img-top" alt="<?= $row['name']; ?>">
+          <!-- <img src="uploads/<?= $row['images']; ?>" class="card-img-top" style="height: 200px; object-fit: cover;"> -->
           <div class="card-body">
             <h5><?= $row['name']; ?></h5>
             <p>Price: ₹<?= $row['selling_price']; ?> | Qty: <?= $row['qty']; ?></p>

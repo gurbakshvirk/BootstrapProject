@@ -772,3 +772,748 @@ while ($row = mysqli_fetch_assoc($categoryChartResult)) {
 
 </body>
 </html>
+
+
+
+
+
+
+<!-- old add products page -->
+ <?php
+session_start();
+$hostname = "localhost";
+$username = "root";
+$password = "";
+$dbname = "CCBS";
+$conn = new mysqli($hostname, $username, $password, $dbname);
+function getAll($table) {
+    global $conn;
+    return mysqli_query($conn, "SELECT * FROM $table");
+}
+
+if (isset($_POST['add_product_btn'])) {
+    $category_id = $_POST['category_id'];
+    $name = $_POST['name'];
+    $slug = $_POST['slug'];
+    $small_description = $_POST['small_description'];
+    $description = $_POST['description'];
+    $original_price = $_POST['original_price'];
+    $selling_price = $_POST['selling_price'];
+    $qty = $_POST['qty'];
+    $status = isset($_POST['status']) ? '1' : '0';
+    $trending = isset($_POST['trending']) ? '1' : '0';
+    $meta_title = $_POST['meta_title'];
+    $meta_description = $_POST['meta_description'];
+    $meta_keywords = $_POST['meta_keywords'];
+    $images = $_FILES['images']['name'];
+    $image_tmp = $_FILES['images']['tmp_name'];
+    $path = "uploads/" . $images;
+    $image_ext = pathinfo($images, PATHINFO_EXTENSION);
+    $filename = time() . '.' . $image_ext;
+    $upload_path = "uploads/" . $filename;
+   $query =  "INSERT INTO `products` (`category_id`, `name`, `slug`, `small_description`, `description`, `original_price`, `selling_price`, `images`, `qty`, `status`, `trending`, `meta_title`, `meta_keywords`, `meta_description`) 
+                            VALUES ( '$category_id', '$name', '$slug', '$small_description', '$description', ' $original_price', '$selling_price', '$filename', '$qty', '$status', '$trending', '$meta_title', '$meta_description', '$meta_keywords')";
+
+
+
+// $cate_query_run = mysqli_query($con, $cate_query);
+    $query_run = mysqli_query($conn, $query);
+
+    if ($query_run) {
+    if (move_uploaded_file($image_tmp, $upload_path)) {
+        $_SESSION['message'] = "Product Added Successfully";
+    } else {
+        $_SESSION['message'] = "Product saved, but image upload failed!";
+    }
+    header("Location: add_product.php");
+    exit();
+    }
+    
+    
+    else {
+        $_SESSION['message'] = "Something went wrong";
+        header("Location: add_product.php");
+        exit();
+    }
+}
+?>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ClassicCave</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Miniver&family=Poppins&family=Roboto&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+</head>
+<body>
+<div class="container">
+    <button class="back">
+        <a href="admin_dashboard.php" style="text-decoration: none; color: black;">Back</a>
+    </button>
+</div>
+
+
+
+<div class="container mt-5 pt-5">
+    <h2>Add Product</h2>
+
+    <?php if (isset($_SESSION['message'])): ?>
+        <!-- <div class="alert alert-info"><?= $_SESSION['message']; unset($_SESSION['message']); ?></div> -->
+    <?php endif; ?>
+    <form action="" method="POST" enctype="multipart/form-data">
+
+        <!-- Category Dropdown -->
+        <div class="mb-3">
+            <label for="category_id" class="form-label">Select Category</label>
+            <select name="category_id" id="category_id" class="form-select" required>
+                <option selected >Select category</option>
+                <?php
+                $categories = getAll("categories");
+                if ($categories && mysqli_num_rows($categories) > 0):
+                    foreach ($categories as $item): ?>
+                        <option value="<?= $item['id']; ?>"><?=($item['name']); ?></option>
+                    <?php endforeach;
+                else: ?>
+                    <option>No Category Available</option>
+                <?php endif; ?>
+            </select>
+        </div>
+
+        <!-- Name -->
+        <div class="mb-3"> 
+            <label class="form-label">Product Name</label>
+            <input type="text" name="name" class="form-control" required>
+        </div>
+
+        <!-- Slug -->
+        <div class="mb-3">
+            <label class="form-label">Slug</label>
+            <input type="text" name="slug" class="form-control" required>
+        </div>
+
+        <!-- Price -->
+        <div class="mb-3">
+            <label class="form-label">Original Price</label>
+            <input type="number" name="original_price" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Selling Price</label>
+            <input type="number" name="selling_price" class="form-control" required>
+        </div>
+
+        <!-- Quantity -->
+        <div class="mb-3">
+            <label class="form-label">Quantity</label>
+            <input type="number" name="qty" class="form-control" required>
+        </div>
+
+        <!-- File Upload -->
+        <div class="mb-3">
+            <label class="form-label">Product Image</label>
+            <input type="file" name="images" class="form-control" required>
+        </div>
+
+        <!-- Small Description -->
+        <div class="mb-3">
+            <label class="form-label">small description</label>
+            <input type="text" name="small_description" class="form-control" required>
+        </div>
+        <!-- Description -->
+        <div class="mb-3">
+            <label class="form-label">Description</label>
+            <textarea name="description" class="form-control" rows="5" required></textarea>
+        </div>
+        <!-- Meta Title -->
+        <div class="mb-3">
+            <label class="form-label">Meta Title</label>
+            <input type="text" name="meta_title" class="form-control" required> 
+        </div>
+        <!-- Meta Description -->
+        <div class="mb-3">  
+            <label class="form-label">Meta Description</label>
+            <textarea name="meta_description" class="form-control" rows="3" required></textarea>
+        </div>
+        <!-- Meta Keywords -->
+        <div class="mb-3">
+            <label class="form-label">Meta Keywords</label>
+            <input type="text" name="meta_keywords" class="form-control" required>
+        </div>  
+        
+        <!-- Checkboxes -->
+        <div class="form-check mb-3">
+            <input class="form-check-input" type="checkbox" name="status" id="status">
+            <label class="form-check-label" for="status">Status</label>
+        </div>
+
+        <div class="form-check mb-3">
+            <input class="form-check-input" type="checkbox" name="trending" id="trending">
+            <label class="form-check-label" for="trending">Trending</label>
+        </div>
+
+        <!-- Submit -->
+        <button type="submit" name="add_product_btn" class="btn btn-primary">Add Product</button>
+    </form>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+<!-- added_products -->
+ <!-- Description: This file displays the products added to the cart by the user -->
+<?php
+session_start();
+$hostname = "localhost";
+$username = "root";
+$password = "";
+$dbname =  "ccbs";
+
+
+$conn = new mysqli($hostname, $username, $password , $dbname);
+$sql ="select * from products";
+$result = mysqli_query($conn, $sql);
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+
+
+
+
+if (isset($_POST['edit_product_btn'])) {
+    $category_id = $_POST['category_id'];
+    $name = $_POST['name'];
+    $slug = $_POST['slug'];
+    $small_description = $_POST['small_description'];
+    $description = $_POST['description'];
+    $original_price = $_POST['original_price'];
+    $selling_price = $_POST['selling_price'];
+    $qty = $_POST['qty'];
+    $status = isset($_POST['status']) ? '1' : '0';
+    $trending = isset($_POST['trending']) ? '1' : '0';
+    $meta_title = $_POST['meta_title'];
+    $meta_description = $_POST['meta_description'];
+    $meta_keywords = $_POST['meta_keywords'];
+    $images = $_FILES['images']['name'];
+    $image_tmp = $_FILES['images']['tmp_name'];
+    $path = "uploads/" . $images;
+    $image_ext = pathinfo($images, PATHINFO_EXTENSION);
+    $filename = time() . '.' . $image_ext;
+    $upload_path = "uploads/" . $filename;
+   $query =  "INSERT INTO `products` (`category_id`, `name`, `slug`, `small_description`, `description`, `original_price`, `selling_price`, `images`, `qty`, `status`, `trending`, `meta_title`, `meta_keywords`, `meta_description`) 
+                            VALUES ( '$category_id', '$name', '$slug', '$small_description', '$description', ' $original_price', '$selling_price', '$filename', '$qty', '$status', '$trending', '$meta_title', '$meta_description', '$meta_keywords')";
+
+
+
+// $cate_query_run = mysqli_query($con, $cate_query);
+    $query_run = mysqli_query($conn, $query);
+
+    if ($query_run) {
+    if (move_uploaded_file($image_tmp, $upload_path)) {
+        $_SESSION['message'] = "Product Added Successfully";
+    } else {
+        $_SESSION['message'] = "Product saved, but image upload failed!";
+    }
+    header("Location: add_product.php");
+    exit();
+    } else {
+        $_SESSION['message'] = "Something went wrong";
+        header("Location: add_product.php");
+        exit();
+    }
+}
+
+
+
+
+if (isset($_POST['delete_product'])) {
+    $category_id = $_GET['category_id'];
+  if (isset($_GET['id'])) {
+    $id = $_GET['id'];
+    $DLT_query = "DELETE FROM products WHERE id = '$id'";
+    $query_run = mysqli_query($conn, $DLT_query);
+
+    if ($query_run) {
+        $_SESSION['message'] = "Product deleted successfully!";
+        header("Location: added_products.php");
+        exit();
+    } else {
+        $_SESSION['message'] = "Something went wrong";
+        header("Location: added_products.php");
+        exit();
+    }
+}
+
+
+    if ($query_run) {
+        $_SESSION['message'] = "Product deleted, but image upload failed!";
+    header("Location: added_products.php");
+    exit();
+    } else {
+        $_SESSION['message'] = "Something went wrong";
+        header("Location: added_products.php");
+        exit();
+    }}
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>ClassicCave</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Miniver&family=Poppins&family=Roboto&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+</head>
+
+<body>
+<div class="container">
+    <button class="back">
+        <a href="admin_dashboard.php" style="text-decoration: none; color: black;">Back</a>
+    </button>
+</div>
+
+<div class="container mt-5 pt-5 ">
+    <h1>Added Products to DataBase By "<?= ($_SESSION['user_name']); ?>"</h1>
+    
+      <div class="row mt-5 " style="display: flex; flex-wrap: wrap; justify-content: center;">
+<?php while ($row = mysqli_fetch_assoc($result)) { ?>
+  <div class="col-md-4 mb-4">
+    <div class="card h-100">
+<div id="carousel<?= $row['id']; ?>" class="carousel slide" data-bs-ride="carousel">
+  <div class="carousel-inner">
+    <?php
+    $product_id = $row['id'];
+    $img_query = "SELECT image_path FROM product_images WHERE product_id = $product_id";
+    $img_result = mysqli_query($conn, $img_query);
+    $active_set = false;
+    if (mysqli_num_rows($img_result) > 0):
+        while ($img = mysqli_fetch_assoc($img_result)):
+            $active_class = !$active_set ? 'active' : '';
+            $active_set = true;
+    ?>
+      <div class="carousel-item <?= $active_class ?>">
+        <img src="uploads/<?= $img['image_path']; ?>" class="d-block w-100" alt="Product Image" style="height: 70vh; object-fit: cover;">
+      </div>
+    <?php endwhile;
+    else: ?>
+      <div class="carousel-item active">
+        <img src="uploads/<?= $row['images']; ?>" class="d-block w-100" alt="Single Image" style="height: 70vh; object-fit: cover;">
+      </div>
+    <?php endif; ?>
+  </div>
+  <!-- Controls (optional) -->
+  <button class="carousel-control-prev" type="button" data-bs-target="#carousel<?= $row['id']; ?>" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon"></span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carousel<?= $row['id']; ?>" data-bs-slide="next">
+    <span class="carousel-control-next-icon"></span>
+  </button>
+</div>
+
+      <div class="card-body">
+        <h5 class="card-title">Product Name: <?= $row['name']; ?></h5>
+        <div class="container"></div>
+        <p class="card-text">Category ID: <?= $row['category_id']; ?></p>
+        <p class="card-text">Product ID: <?= $row['id']; ?></p>
+        <p class="card-text">Slug: <?= $row['slug']; ?></p>
+        <p class="card-text">Small Description: <?= $row['small_description']; ?></p>
+        <p class="card-text">Description: <?= $row['description']; ?></p>
+        <p class="card-text">Original Price: ₹<?= $row['original_price']; ?></p>
+        <p class="card-text">Selling Price: ₹<?= $row['selling_price']; ?></p>
+        <p class="card-text">Quantity: <?= $row['qty']; ?></p>
+        <p class="card-text">Status: <?= $row['status'] ? '1' : '0'; ?></p>
+        <p class="card-text">Trending: <?= $row['trending'] ? '1' : '0'; ?></p>
+        <p class="card-text">Meta Title: <?= $row['meta_title']; ?></p>
+        <p class="card-text">Meta Description: <?= $row['meta_description']; ?></p>
+        <p class="card-text">Meta Keywords: <?= $row['meta_keywords']; ?></p>
+        <div class="d-flex justify-content-between mt-3">
+          <a href="#" class="btn btn-primary btn-sm">See Product</a>
+          <a href="edit_product.php?id=<?= $row['id']; ?>" class="btn btn-warning btn-sm">Edit Product</a>
+          <a href="delete_products.php?id=<?= $row['id']; ?>" class="btn btn-danger btn-sm" vlaue="delete_product">Delete Product</a>
+        </div>
+      </div>
+    </div>
+  </div>
+<?php } ?>
+</div>
+
+     
+
+</div>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"></script>
+</body>
+</html>
+
+
+
+<!-- OLD PRODUCTS.PHP CODE -->
+ <?php
+session_start();
+$hostname = "localhost";
+$username = "root";
+$password = "";
+$dbname = "ccbs";
+
+$conn = new mysqli($hostname, $username, $password, $dbname);
+$sql = "SELECT * FROM products WHERE status='1'";
+$result = mysqli_query($conn, $sql);
+
+if ($conn->connect_error) {
+  die("Connection failed: " . $conn->connect_error);
+}
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>ClassicCave</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Miniver&family=Poppins&family=Roboto&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+  <style>
+    /* --- Product Card Styling --- */
+    <style>
+  .product-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .product-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+  }
+
+  .product-card img {
+    height: 250px;
+    object-fit: cover;
+  }
+
+  .product-card .card-body {
+    padding: 0.8rem 1rem;
+    text-align: center;
+  }
+
+  .product-card .card-title {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+  }
+
+  .product-card .card-body p {
+    font-size: 0.9rem;
+    margin: 0.2rem 0;
+  }
+
+  h1 {
+    font-family: 'Dancing Script', cursive;
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+
+  .btn-sm {
+    padding: 0.3rem 0.75rem;
+    font-size: 0.8rem;
+  }
+</style>
+</head>
+
+<body>
+  <header>
+    <?php include 'indexnav.php'; ?>
+  </header>
+
+  <div class="container mt-5 pt-5">
+    <h1>All Products</h1>
+    <div class="row gy-4">
+      <?php while ($row = mysqli_fetch_assoc($result)) { ?>
+        <div class="col-md-4 mb-4">
+          <div class="card product-card h-100 shadow-sm border-0">
+            <img src="uploads/<?= $row['images']; ?>" class="card-img-top" alt="<?= $row['name']; ?>">
+            <div class="card-body">
+              <h5 class="card-title"><?= $row['name']; ?></h5>
+              <p class="text-muted mb-1">
+                ₹<?= $row['selling_price']; ?>
+                <del class="text-secondary small">₹<?= $row['original_price']; ?></del>
+              </p>
+              <a href="single_product.php?id=<?= $row['id']; ?>" class="btn btn-dark btn-sm mt-3">View Product</a>
+            </div>
+          </div>
+        </div>
+      <?php } ?>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"></script>
+</body>
+
+</html>
+
+
+
+
+<!-- OLD SINGLE PRODUCT -->
+
+
+<?php
+session_start();
+$hostname = "localhost";
+$username = "root";
+$password = "";
+$dbname = "CCBS";
+
+$conn = new mysqli($hostname, $username, $password, $dbname);
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
+    $_SESSION['message'] = "Invalid Product ID!";
+    header("Location: index.php");
+    exit();
+}
+
+$product_id = $_GET['id'];
+
+$sql = "SELECT p.*, c.name AS category_name 
+        FROM products p 
+        JOIN categories c ON p.category_id = c.id 
+        WHERE p.id = $product_id LIMIT 1";
+
+$result = mysqli_query($conn, $sql);
+$product = mysqli_fetch_assoc($result);
+
+if (!$product) {
+    $_SESSION['message'] = "Product not found!";
+    header("Location: view_product.php");
+    exit();
+}
+
+
+
+
+if (isset($_POST["addtocartbtn"])) {
+    $user_id = $_SESSION['user_id'];
+    $product_id = $_POST['product_id'];
+    $qty = (int)$_POST['qty'];
+
+    //product already exists in the cart
+    $check_sql = "SELECT quantity FROM cart WHERE user_id = $user_id AND product_id = $product_id";
+    $check_result = mysqli_query($conn, $check_sql);
+
+    if (mysqli_num_rows($check_result) > 0) {
+        //Product exists  update quantity
+        $row = mysqli_fetch_assoc($check_result);
+        $existing_qty = $row['quantity'];
+        $new_qty = $existing_qty + $qty;
+
+        $update_sql = "UPDATE cart SET quantity = $new_qty WHERE user_id = $user_id AND product_id = $product_id";
+        if (mysqli_query($conn, $update_sql)) {
+            $_SESSION['message'] = "Product quantity updated in cart!";
+        } else {
+            $_SESSION['message'] = "Failed to update cart.";
+        }
+
+    } else {
+        //  Product not in cart insert new row
+        $insert_sql = "INSERT INTO cart (user_id, product_id, quantity) VALUES ($user_id, $product_id, $qty)";
+        if (mysqli_query($conn, $insert_sql)) {
+            $_SESSION['message'] = "Product added to cart!";
+        } else {
+            $_SESSION['message'] = "Failed to add to cart.";
+        }
+    }
+
+    //Redirect back to the same product page
+    header("Location: single_product.php?id=" . $product_id);
+    exit();
+}
+
+
+
+
+
+
+
+if(isset($_POST["wishlistbtn"])){
+  
+// user id
+if (isset($_SESSION['user_id'])) {
+    //  loged in
+    $user_id = $_SESSION['user_id'];
+} else {
+    // not loged in
+    header("Location: login.php");
+    exit();
+}
+$sql = "SELECT * FROM wishlist WHERE user_id = $user_id AND product_id = $product_id";
+$result = mysqli_query($conn, $sql);
+
+
+if (mysqli_num_rows($result) > 0) {
+    echo "✅ Product is already in your wishlist.";
+} else {
+    $insert_sql = "INSERT INTO wishlist (user_id, product_id, added_on) VALUES ($user_id, $product_id, NOW())";
+    if (mysqli_query($conn, $insert_sql)) {
+        echo "Product added to your wishlist!";
+    } else {
+        echo "Failed to add to wishlist.";
+    }
+}
+}
+
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title><?= htmlspecialchars($product['name']); ?> | ClassicCave</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+    }
+    .product-img {
+      width: 100%;
+      max-height: 500px;
+      object-fit: contain;
+      background-color: #f9f9f9;
+      padding: 20px;
+      border-radius: 10px;
+    }
+    .price-box {
+      font-size: 1.4rem;
+      margin-bottom: 10px;
+    }
+    .price-box del {
+      color: #888;
+      margin-left: 10px;
+    }
+    .btn-buy {
+      width: 100%;
+      font-size: 1.1rem;
+    }
+    .badge {
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+
+<?php
+include'indexnav.php';
+?>
+
+
+
+
+<div class="container py-5 mt-5 pt-5">
+  <?php if(isset($_SESSION['message'])): ?>
+  <div class="alert alert-success alert-dismissible fade show" role="alert">
+    <?= $_SESSION['message']; ?>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  <?php unset($_SESSION['message']); ?>
+<?php endif; ?>
+  <a href="index.php" class="btn btn-outline-secondary mb-4">← Back to Products</a>
+
+  <div class="row g-4">
+    <!-- Left: Image -->
+    <div class="col-md-6">
+      <img src="uploads/<?= $product['images']; ?>" alt="<?= $product['name']; ?>" class="product-img">
+    </div>
+
+    <!-- Right: Details -->
+    <div class="col-md-6">
+      <h2><?= $product['name']; ?></h2>
+      <p class="text-muted">Category: <?= $product['category_name']; ?></p>
+
+      <div class="price-box">
+        ₹<?= $product['selling_price']; ?>
+        <del>₹<?= $product['original_price']; ?></del>
+      </div>
+      
+     <p>
+  <strong>Stock Status:</strong>
+  <?php
+    $qty = $product['qty'];
+    if ($qty == 0) {
+        echo '<span class="badge bg-danger">Out of Stock</span>';
+    } elseif ($qty <= 3) {
+        echo '<span class="badge bg-warning text-dark">Only ' . $qty . ' left! Hurry up!</span>';
+    } elseif ($qty <= 5) {
+        echo '<span class="badge bg-warning text-dark">' . $qty . ' in stock</span>';
+    } else {
+        echo '<span class="badge bg-success">In Stock</span>';
+    }
+  ?>
+</p>
+
+      <!-- <p>
+        <strong>Status:</strong>
+        <?= $product['status'] ? '<span class="badge bg-success">Active</span>' : '<span class="badge bg-danger">Inactive</span>'; ?>
+      </p> -->
+      <p>
+        <strong>Trending:</strong>
+        <?= $product['trending'] ? '<span class="badge bg-info text-dark">Yes</span>' : 'No'; ?>
+      </p>
+
+      <hr>
+      <p><strong>Short Description:</strong><br><?= $product['small_description']; ?></p>
+      
+
+      <button class="btn btn-primary btn-buy mt-3">Buy Now</button>
+      <form method="POST" action="">
+  <input type="hidden" name="product_id" value="<?= $product['id']; ?>">
+  <input type="hidden" name="qty" value="1"> <!-- default quantity -->
+  <button type="submit" name="addtocartbtn" class="btn btn-success btn-buy mt-3">Add to Cart</button>
+</form>
+<form action="add_to_wishlist.php" method="POST">
+    <input type="hidden" name="product_id" value="<?= $product['id']; ?>">
+    <input type="hidden" name="from" value="single_product.php?id=<?= $product['id']; ?>">
+    <button type="submit" name="wishlistbtn" class="btn btn-outline-danger">❤️ Add to Wishlist</button>
+</form>
+<p><strong>Full Description:</strong><br><?= nl2br($product['description']); ?></p>
+
+    </div>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
+

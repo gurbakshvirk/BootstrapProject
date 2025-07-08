@@ -59,15 +59,38 @@ if (isset($_POST['update_product'])) {
 
 
     // Handle image
-    $image = $_FILES['images']['name'];
-    if (!empty($image)) {
-        $image_ext = pathinfo($image, PATHINFO_EXTENSION);
-        $filename = time() . '.' . $image_ext;
+    // $image = $_FILES['images']['name'];
+    // if (!empty($image)) {
+    //     $image_ext = pathinfo($image, PATHINFO_EXTENSION);
+    //     $filename = time() . '.' . $image_ext;
+    //     $upload_path = "uploads/" . $filename;
+    //     move_uploaded_file($_FILES['images']['tmp_name'], $upload_path);
+    // } else {
+    //     $filename = $_POST['old_image'];
+    // }
+    
+
+
+
+
+    if (!empty($_FILES['images']['name'][0])) {
+    foreach ($_FILES['images']['tmp_name'] as $key => $tmp_name) {
+        $image_name = $_FILES['images']['name'][$key];
+        $image_tmp = $_FILES['images']['tmp_name'][$key];
+
+        $image_ext = pathinfo($image_name, PATHINFO_EXTENSION);
+        $filename = time() . '_' . $key . '.' . $image_ext;
         $upload_path = "uploads/" . $filename;
-        move_uploaded_file($_FILES['images']['tmp_name'], $upload_path);
-    } else {
-        $filename = $_POST['old_image'];
+
+        if (move_uploaded_file($image_tmp, $upload_path)) {
+            $insert_img_query = "INSERT INTO product_images (product_id, image_path) VALUES ('$product_id', '$filename')";
+            mysqli_query($conn, $insert_img_query);
+        }
     }
+}
+
+
+
 
 
     $update_query = "UPDATE products SET 
@@ -191,11 +214,27 @@ if (isset($_POST['update_product'])) {
 
         <div class="mb-3">
             <label>Current Image</label><br>
-            <img src="uploads/<?= $product['images']; ?>" width="120" class="img-thumbnail">
+            <!-- <img src="uploads/<?= $product['images']; ?>" width="120" class="img-thumbnail"> -->
+            <!-- <label>Other Uploaded Images:</label><br> -->
+<div class="d-flex flex-wrap gap-2">
+<?php
+$image_query = "SELECT * FROM product_images WHERE product_id = '$product_id'";
+$image_result = mysqli_query($conn, $image_query);
+while ($img = mysqli_fetch_assoc($image_result)) {
+?>
+    <div class="position-relative">
+        <img src="uploads/<?= $img['image_path']; ?>" width="100" class="img-thumbnail">
+        <a href="delete_image.php?id=<?= $img['id']; ?>&product_id=<?= $product_id ?>" class="btn btn-sm btn-danger position-absolute top-0 end-0">X</a>
+    </div>
+<?php } ?>
+</div>
+
         </div>
         <div class="mb-3">
             <label>Change Image</label>
-            <input type="file" name="images" class="form-control">
+            <!-- <input type="file" name="images" class="form-control"> -->
+             <input type="file" name="images[]" class="form-control" multiple>
+
         </div>
 
         <button type="submit" name="update_product" class="btn btn-success">Update Product</button>

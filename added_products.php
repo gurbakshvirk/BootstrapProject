@@ -13,11 +13,6 @@ $result = mysqli_query($conn, $sql);
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
-
-
-
-
-
 if (isset($_POST['edit_product_btn'])) {
     $category_id = $_POST['category_id'];
     $name = $_POST['name'];
@@ -60,14 +55,24 @@ if (isset($_POST['edit_product_btn'])) {
         exit();
     }
 }
-
-
-
-
 if (isset($_POST['delete_product'])) {
     $category_id = $_GET['category_id'];
-  $DLT_query = "DELETE FROM products WHERE category_id = '$id'";
+  if (isset($_GET['id'])) {
+    $id = $_GET['id'];
+    $DLT_query = "DELETE FROM products WHERE id = '$id'";
     $query_run = mysqli_query($conn, $DLT_query);
+
+    if ($query_run) {
+        $_SESSION['message'] = "Product deleted successfully!";
+        header("Location: added_products.php");
+        exit();
+    } else {
+        $_SESSION['message'] = "Something went wrong";
+        header("Location: added_products.php");
+        exit();
+    }
+}
+
 
     if ($query_run) {
         $_SESSION['message'] = "Product deleted, but image upload failed!";
@@ -108,7 +113,37 @@ if (isset($_POST['delete_product'])) {
 <?php while ($row = mysqli_fetch_assoc($result)) { ?>
   <div class="col-md-4 mb-4">
     <div class="card h-100">
-      <img src="uploads/<?= $row['images']; ?>" alt="Product Image" class="card-img-top" style="height: 70vh; object-fit: cover;">
+<div id="carousel<?= $row['id']; ?>" class="carousel slide" data-bs-ride="carousel">
+  <div class="carousel-inner">
+    <?php
+    $product_id = $row['id'];
+    $img_query = "SELECT image_path FROM product_images WHERE product_id = $product_id";
+    $img_result = mysqli_query($conn, $img_query);
+    $active_set = false;
+    if (mysqli_num_rows($img_result) > 0):
+        while ($img = mysqli_fetch_assoc($img_result)):
+            $active_class = !$active_set ? 'active' : '';
+            $active_set = true;
+    ?>
+      <div class="carousel-item <?= $active_class ?>">
+        <img src="uploads/<?= $img['image_path']; ?>" class="d-block w-100" alt="Product Image" style="height: 70vh; object-fit: cover;">
+      </div>
+    <?php endwhile;
+    else: ?>
+      <div class="carousel-item active">
+        <img src="uploads/<?= $row['images']; ?>" class="d-block w-100" alt="Single Image" style="height: 70vh; object-fit: cover;">
+      </div>
+    <?php endif; ?>
+  </div>
+  <!-- Controls (optional) -->
+  <button class="carousel-control-prev" type="button" data-bs-target="#carousel<?= $row['id']; ?>" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon"></span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carousel<?= $row['id']; ?>" data-bs-slide="next">
+    <span class="carousel-control-next-icon"></span>
+  </button>
+</div>
+
       <div class="card-body">
         <h5 class="card-title">Product Name: <?= $row['name']; ?></h5>
         <div class="container"></div>
