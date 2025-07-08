@@ -13,44 +13,9 @@
     <!-- <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet"> -->
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-light bg-light px-4 border-bottom fixed-top">
-  <div class="container-fluid ">
-    <a class="navbar-brand fs-6 d-flex align-items-center" href="index.php">
-  <img src="assets/classic2.png" style="height: 8vh; width: 8vh;">
-  <span style="display:inline-block; width:auto; height:auto; margin-left: 5px;">ClassicCave</span>
-</a>
-
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav ms-auto mb-2 mb-lg-0 fs-5 text-end">
-        <li class="nav-item">
-          <a class="nav-link active text-primary" aria-current="page" href="index.php">Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="products.php">Products</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="about.php">About</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="cart.php">Cart</a>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Support
-          </a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="signin.php">SignIn</a></li>
-            <li><a class="dropdown-item" href="contact.php">Contact Us</a></li>
-          </ul>
-        </li>
-       
-      </ul>
-    </div>
-  </div>
-</nav>
+<?php
+include'indexnav.php';
+?>
 
 <div class="container mt-5 pt-4 ">
   <div class="row pt-4 mt-2">

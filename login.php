@@ -214,6 +214,14 @@ body{
             <input type="password" name="login_password" class="form-control" id="login_password" placeholder="Enter your password" required><i class='bx bxs-lock-alt' ></i>
         </div>
         <button type="submit" name="login" class="btn btn-success">Login</button>
+        <div style="text-align: center; margin-top: 15px;">
+    <p>or</p>
+    <a href="google-login.php" class="btn btn-light" style="border: 1px solid #ccc; padding: 10px 20px; border-radius: 5px;">
+        <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google Logo" style="width:20px; margin-right:10px;">
+        Continue with Google
+    </a>
+</div>
+
     </form>
     </div>
 </div>

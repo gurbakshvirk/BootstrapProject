@@ -31,53 +31,143 @@ $query = mysqli_query($conn, $sql);
 
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Your Cart | ClassicCave</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
+
 <body>
-<div class="container mt-5">
-    <h2 class="mb-4">Your Shopping Cart</h2>
+    <?php
+    include 'indexnav.php';
+    ?>
+    <div class="container mt-5">
+        <h2 class="mb-4">Your Shopping Cart</h2>
 
-    <?php if (mysqli_num_rows($query) > 0): ?>
-        <table class="table table-bordered text-center">
-            <thead class="table-dark">
-                <tr>
-                    <th>Image</th>
-                    <th>Product Name</th>
-                    <th>Price (₹)</th>
-                    <th>Quantity</th>
-                    <th>Subtotal (₹)</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php 
-                $total = 0;
-                while ($row = mysqli_fetch_assoc($query)): 
-                    $subtotal = $row['selling_price'] * $row['quantity'];
-                    $total += $subtotal;
-                ?>
-                <tr>
-                    <td><img src="uploads/<?= htmlspecialchars($row['images']); ?>" alt="<?= htmlspecialchars($row['name']); ?>" width="70"></td>
-                    <td><?= htmlspecialchars($row['name']); ?></td>
-                    <td><?= $row['selling_price']; ?></td>
-                    <td><?= $row['quantity']; ?></td>
-                    <td><?= $subtotal; ?></td>
-                </tr>
-                <?php endwhile; ?>
-                <tr class="table-secondary fw-bold">
-                    <td colspan="4">Total</td>
-                    <td>₹<?= $total; ?></td>
-                </tr>
-            </tbody>
-        </table>
-    <?php else: ?>
-        <p class="alert alert-warning">Your cart is empty.</p>
-    <?php endif; ?>
+        <?php if (mysqli_num_rows($query) > 0): ?>
+            <table class="table table-bordered text-center">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Image</th>
+                        <th>Product Name</th>
+                        <th>Price (₹)</th>
+                        <th>Quantity</th>
+                        <th>Subtotal (₹)</th>
+<th>Action</th>
 
-    <a href="products.php" class="btn btn-primary mt-3">Continue Shopping</a>
-</div>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    $total = 0;
+                    while ($row = mysqli_fetch_assoc($query)):
+                        $subtotal = $row['selling_price'] * $row['quantity'];
+                        $total += $subtotal;
+                        ?>
+                        <tr>
+                            <td><img src="uploads/<?= htmlspecialchars($row['images']); ?>"
+                                    alt="<?= htmlspecialchars($row['name']); ?>" width="70"></td>
+                            <td><?= htmlspecialchars($row['name']); ?></td>
+                            <td><?= $row['selling_price']; ?></td>
+                            <td>
+                                <div class="input-group justify-content-center" style="max-width: 120px; margin:auto;">
+                                    <button class="btn btn-sm btn-outline-secondary updateQtyBtn" data-type="decrement"
+                                        data-id="<?= $row['product_id']; ?>">−</button>
+                                    <input type="text" class="form-control form-control-sm text-center qtyInput"
+                                        value="<?= $row['quantity']; ?>" data-id="<?= $row['product_id']; ?>" readonly>
+                                    <button class="btn btn-sm btn-outline-secondary updateQtyBtn" data-type="increment"
+                                        data-id="<?= $row['product_id']; ?>">+</button>
+                                </div>
+                            </td>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"></script>
+                            <td><?= $subtotal; ?></td>
+                            <td>
+    <button class="btn btn-sm btn-danger deleteItemBtn" data-id="<?= $row['product_id']; ?>">🗑️</button>
+</td>
+
+                        </tr>
+                    <?php endwhile; ?>
+                    <tr class="table-secondary fw-bold">
+                        <td colspan="4">Total</td>
+                        <td>₹<?= $total; ?></td>
+                    </tr>
+                </tbody>
+            </table>
+            <a href="checkout.php" class="btn btn-success mt-3">Proceed to Checkout</a>
+
+        <?php else: ?>
+            <p class="alert alert-warning">Your cart is empty.</p>
+        <?php endif; ?>
+
+        <a href="products.php" class="btn btn-primary mt-3">Continue Shopping</a>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function(){
+    $(".updateQtyBtn").click(function(){
+        var productId = $(this).data("id");
+        var actionType = $(this).data("type");
+        var qtyInput = $('.qtyInput[data-id="'+productId+'"]');
+        var currentQty = parseInt(qtyInput.val());
+
+        // Prevent qty going below 1
+        if (actionType === "decrement" && currentQty <= 1) return;
+
+        var newQty = (actionType === "increment") ? currentQty + 1 : currentQty - 1;
+
+        // AJAX request
+        $.ajax({
+            url: "update_cart_quantity.php",
+            method: "POST",
+            data: {
+                product_id: productId,
+                quantity: newQty
+            },
+            success: function(response){
+                if(response == "success"){
+                    qtyInput.val(newQty);
+                    location.reload(); // refresh the page to update totals
+                } else {
+                    alert("Failed to update quantity.");
+                }
+            }
+        });
+    });
+});
+</script>
+<script>
+$(document).ready(function(){
+
+    // Existing qty increment/decrement remains here...
+
+    // ❌ DELETE BUTTON
+    $(".deleteItemBtn").click(function(){
+        var productId = $(this).data("id");
+
+        if(confirm("Are you sure you want to remove this item from cart?")){
+            $.ajax({
+                url: "delete_cart_item.php",
+                method: "POST",
+                data: {
+                    product_id: productId
+                },
+                success: function(response){
+                    if(response == "success"){
+                        location.reload(); // refresh cart page
+                    } else {
+                        alert("Failed to delete item.");
+                    }
+                }
+            });
+        }
+    });
+
+});
+</script>
+
+
 </body>
+
 </html>

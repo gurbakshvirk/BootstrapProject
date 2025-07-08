@@ -35,23 +35,41 @@ if (!$product) {
 
 
 
-if(isset($_POST["addtocartbtn"])){
-  $user_id = $_SESSION['user_id'];
-  $product_id = $_POST['product_id'];
-  $qty = $_POST['qty'];
-  $stmt = $conn->prepare("INSERT INTO cart (user_id, product_id, quantity) VALUES (?, ?, ?)");
-  if ($stmt) {
-      $stmt->bind_param("iii", $user_id, $product_id, $qty);
-      $stmt->execute();
-      $stmt->close();
-      $_SESSION['message'] = "Product added to cart!";
-header("Location: single_product.php?id=" . $product_id);
-exit();
+if (isset($_POST["addtocartbtn"])) {
+    $user_id = $_SESSION['user_id'];
+    $product_id = $_POST['product_id'];
+    $qty = (int)$_POST['qty'];
 
-  } else {
-      // Handle error, e.g. log or set a session message
-      $_SESSION['message'] = "Failed to add to cart.";
-  }
+    //product already exists in the cart
+    $check_sql = "SELECT quantity FROM cart WHERE user_id = $user_id AND product_id = $product_id";
+    $check_result = mysqli_query($conn, $check_sql);
+
+    if (mysqli_num_rows($check_result) > 0) {
+        //Product exists  update quantity
+        $row = mysqli_fetch_assoc($check_result);
+        $existing_qty = $row['quantity'];
+        $new_qty = $existing_qty + $qty;
+
+        $update_sql = "UPDATE cart SET quantity = $new_qty WHERE user_id = $user_id AND product_id = $product_id";
+        if (mysqli_query($conn, $update_sql)) {
+            $_SESSION['message'] = "Product quantity updated in cart!";
+        } else {
+            $_SESSION['message'] = "Failed to update cart.";
+        }
+
+    } else {
+        //  Product not in cart insert new row
+        $insert_sql = "INSERT INTO cart (user_id, product_id, quantity) VALUES ($user_id, $product_id, $qty)";
+        if (mysqli_query($conn, $insert_sql)) {
+            $_SESSION['message'] = "Product added to cart!";
+        } else {
+            $_SESSION['message'] = "Failed to add to cart.";
+        }
+    }
+
+    //Redirect back to the same product page
+    header("Location: single_product.php?id=" . $product_id);
+    exit();
 }
 
 
@@ -126,10 +144,14 @@ if (mysqli_num_rows($result) > 0) {
 </head>
 <body>
 
+<?php
+include'indexnav.php';
+?>
 
 
 
-<div class="container py-5">
+
+<div class="container py-5 mt-5 pt-5">
   <?php if(isset($_SESSION['message'])): ?>
   <div class="alert alert-success alert-dismissible fade show" role="alert">
     <?= $_SESSION['message']; ?>
@@ -137,7 +159,7 @@ if (mysqli_num_rows($result) > 0) {
   </div>
   <?php unset($_SESSION['message']); ?>
 <?php endif; ?>
-  <a href="view_product.php" class="btn btn-outline-secondary mb-4">← Back to Products</a>
+  <a href="index.php" class="btn btn-outline-secondary mb-4">← Back to Products</a>
 
   <div class="row g-4">
     <!-- Left: Image -->
@@ -154,7 +176,7 @@ if (mysqli_num_rows($result) > 0) {
         ₹<?= $product['selling_price']; ?>
         <del>₹<?= $product['original_price']; ?></del>
       </div>
-
+      
       <p><strong>Quantity:</strong> <?= $product['qty']; ?></p>
       <p>
         <strong>Status:</strong>

@@ -66,6 +66,9 @@ $result = mysqli_query($conn, $sql);
   </style>
 </head>
 <body>
+  <?php
+include'indexnav.php';
+?>
 
 <h2>Your Wishlist</h2>
 

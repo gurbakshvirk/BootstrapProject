@@ -1,190 +1,136 @@
 <?php
 session_start();
-// if (!isset($_SESSION['status'])) {
-//     $_SESSION['status'] === '0'; // or any default value you want
-// }
 
 $hostname = "localhost";
 $username = "root";
 $password = "";
 $dbname = "ccbs";
 
-
 $conn = new mysqli($hostname, $username, $password, $dbname);
-$sql = "select * from products where status='1'";
-$sql2 = "select * from categories where status='1'";
-$sql3 = "SELECT * FROM products WHERE trending='1'";
-// $_GET = $user_id('id');
-
-// $sql2 = "SELECT * FROM categories WHERE status='1'";
-$result = mysqli_query($conn, $sql);
 if ($conn->connect_error) {
-  die("Connection failed: " . $conn->connect_error);
+    die("Connection failed: " . $conn->connect_error);
 }
 
-$result2 = mysqli_query($conn, $sql2);
-if ($conn->connect_error) {
-  die("Connection failed: " . $conn->connect_error);
-}
+// Product Queries
+$sqlProducts = "SELECT * FROM products WHERE status='1'";
+$sqlTrending = "SELECT * FROM products WHERE trending='1'";
+$sqlCategories = "SELECT * FROM categories WHERE status='1'";
 
-$result3 = mysqli_query($conn, $sql3);
-if ($conn->connect_error) {
-  die("Connection failed: " . $conn->connect_error);
-}
-
-
-
-
-
-echo "Connected successfully";
-// <?php
-// session_start();
-// $hostname = "localhost";
-// $username = "root";
-// $password = "";
-// $dbname =  "ccbs";
-
-$status = isset($_POST['status']) ? '1' : '0';
-$trending = isset($_POST['trending']) ? '1' : '0';
-// $conn = new mysqli($hostname, $username, $password , $dbname);
-
-
-
-
-// if ($conn->connect_error) {
-//     die("Connection failed: " . $conn->connect_error);
-// }
+$resultProducts = mysqli_query($conn, $sqlProducts);
+$resultTrending = mysqli_query($conn, $sqlTrending);
+$resultCategories = mysqli_query($conn, $sqlCategories);
 
 ?>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
   <title>ClassicCave</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  
+  <!-- Bootstrap and Fonts -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Miniver&family=Poppins&family=Roboto&display=swap"
-    rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Miniver&family=Poppins&family=Roboto&display=swap" rel="stylesheet">
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+
 </head>
 
 <body>
   <header>
-   <nav class="navbar navbar-expand-lg navbar-light bg-light px-4 border-bottom fixed-top">
-  <div class="container-fluid">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light px-4 border-bottom fixed-top">
+      <div class="container-fluid">
 
-    <!-- Logo for mobile view -->
-    <div class="d-flex d-lg-none w-100 justify-content-center mb-2">
-      <a class="navbar-brand d-flex align-items-center gap-2" href="index.php">
-        <img src="assets/classic2.png" alt="Logo" style="height: 5.5vh;">
-        <span class="fw-bold" style="font-size: 16px;">ClassicCave</span>
-      </a>
-    </div>
+        <!-- Mobile Logo -->
+        <div class="d-flex d-lg-none w-100">
+          <a class="navbar-brand d-flex align-items-center gap-2" href="index.php">
+            <img src="assets/classic2.png" alt="Logo" style="height: 10vh;">
+          </a>
+        </div>
 
-    <!-- Toggler for mobile -->
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
-      aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+        <!-- Toggler -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+          <span class="navbar-toggler-icon"></span>
+        </button>
 
-    <div class="collapse navbar-collapse w-100" id="navbarContent">
-
-      <!-- LEFT NAV LINKS -->
-      <div class="d-flex align-items-center justify-content-start flex-grow-1">
-        <ul class="navbar-nav flex-row flex-lg-row flex-column gap-3 gap-lg-3" style="font-size: 15px;">
-          <li class="nav-item">
-            <a class="nav-link" href="./index.php">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="products.php">Products</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="about.php">About</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link " href="wishlist.php">Wishlist</a>
-          </li>
-          <?php if (isset($_SESSION['user_id'])): ?>
-            <li class="nav-item">
-              <a class="nav-link" href="cart.php?id=<?= $_SESSION['user_id'] ?>">Cart</a>
-            </li>
-          <?php endif; ?>
-        </ul>
-      </div>
-
-      <!-- CENTER LOGO (desktop only) -->
-      <div class="d-none d-lg-flex align-items-center justify-content-center flex-shrink-0"
-        style="position: absolute; left: 50%; transform: translateX(-50%);">
-        <a class="navbar-brand d-flex align-items-center gap-2" href="index.php">
-          <img src="assets/classic2.png" alt="Logo" style="height: 6vh;">
-          <span class="fw-bold" style="font-size: 16px;">ClassicCave</span>
-        </a>
-      </div>
-
-      <!-- RIGHT USER DROPDOWN -->
-      <div class="d-flex align-items-center justify-content-end flex-grow-1">
-        <?php if (isset($_SESSION['user_id'])): ?>
-          <div class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle text-success" href="#" role="button" data-bs-toggle="dropdown"
-              aria-expanded="false" style="font-size: 15px;">
-              <?= htmlspecialchars($_SESSION['user_name']); ?>
-            </a>
-            <ul class="dropdown-menu dropdown-menu-end">
-              <?php if ($_SESSION['user_role'] === 'admin'): ?>
-                <li><a class="dropdown-item" href="admin_dashboard.php">Admin Panel</a></li>
-                <li><hr class="dropdown-divider"></li>
+        <div class="collapse navbar-collapse w-100" id="navbarContent">
+          <!-- LEFT LINKS -->
+          <div class="d-flex align-items-center justify-content-start flex-grow-1">
+            <ul class="navbar-nav flex-row flex-lg-row flex-column gap-3 gap-lg-3" style="font-size: 15px;">
+              <li class="nav-item"><a class="nav-link" href="./index.php">Home</a></li>
+              <li class="nav-item"><a class="nav-link" href="products.php">Products</a></li>
+              <li class="nav-item"><a class="nav-link" href="about.php">About</a></li>
+              <li class="nav-item"><a class="nav-link" href="wishlist.php">Wishlist</a></li>
+              <?php if (isset($_SESSION['user_id'])): ?>
+                <li class="nav-item"><a class="nav-link" href="cart.php?id=<?= $_SESSION['user_id'] ?>">Cart</a></li>
               <?php endif; ?>
-              <li><a class="dropdown-item text-danger" href="logout.php">Logout</a></li>
             </ul>
           </div>
-        <?php else: ?>
-          <div class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-              aria-expanded="false" style="font-size: 15px;">
-              Support
+
+          <!-- CENTER LOGO (Desktop Only) -->
+          <div class="d-none d-lg-flex align-items-center justify-content-center flex-shrink-0"
+            style="position: absolute; left: 50%; transform: translateX(-50%);">
+            <a class="navbar-brand d-flex align-items-center gap-2" href="index.php">
+              <img src="assets/classic2.png" alt="Logo" style="height: 14vh;">
             </a>
-            <ul class="dropdown-menu dropdown-menu-end">
-              <li><a class="dropdown-item" href="login.php">Sign In</a></li>
-              <li><a class="dropdown-item" href="signin.php">Register</a></li>
-              <li><a class="dropdown-item" href="contact.php">Contact Us</a></li>
-            </ul>
           </div>
-        <?php endif; ?>
-      </div>
 
-    </div>
+          <!-- RIGHT USER DROPDOWN -->
+          <div class="d-flex align-items-center justify-content-end flex-grow-1">
+            <?php if (isset($_SESSION['user_id'])): ?>
+              <div class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle text-success" href="#" role="button" data-bs-toggle="dropdown">
+                  <?= htmlspecialchars($_SESSION['user_name']); ?>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end">
+                  <?php if ($_SESSION['user_role'] === 'admin'): ?>
+                    <li><a class="dropdown-item" href="admin_dashboard.php">Admin Panel</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                  <?php endif; ?>
+                  <li><a class="dropdown-item" href="my_orders.php">🧾 My Orders</a></li>
+                  <li><a class="dropdown-item text-danger" href="logout.php">Logout</a></li>
+                </ul>
+              </div>
+            <?php else: ?>
+  <div class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle text-dark" href="#" id="guestDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+      Account
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="guestDropdown">
+      <li><a class="dropdown-item" href="login.php">Login</a></li>
+      <li><a class="dropdown-item" href="register.php">Create Account</a></li>
+    </ul>
   </div>
-</nav>
+<?php endif; ?>
 
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Carousel -->
     <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
       <div class="carousel-inner">
-        <div class="carousel-item active">
-          <img src="assets/pexel.jpg" class="d-block w-100" alt="image1">
-        </div>
-        <div class="carousel-item">
-          <img src="assets/shirts.jpg" class="d-block w-100" alt="image2">
-        </div>
-        <div class="carousel-item">
-          <img src="assets/jeans.jpg" class="d-block w-100" alt="image3">
-        </div>
+        <div class="carousel-item active"><img src="assets/pexel.jpg" class="d-block w-100" alt="image1"></div>
+        <div class="carousel-item"><img src="assets/shirts.jpg" class="d-block w-100" alt="image2"></div>
+        <div class="carousel-item"><img src="assets/jeans.jpg" class="d-block w-100" alt="image3"></div>
       </div>
-      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying"
-        data-bs-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
+      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon"></span>
       </button>
-      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying"
-        data-bs-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
+      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
+        <span class="carousel-control-next-icon"></span>
       </button>
     </div>
   </header>
+
+  <!-- Remaining sections: About, Trending, Products, Categories, Reviews, Footer etc. -->
+  <!-- Keep your current layout/content below here unchanged, it's already good. -->
+
   <!-- about and right side image -->
   <section class="about my-5">
     <div class="container ">
@@ -277,7 +223,7 @@ $trending = isset($_POST['trending']) ? '1' : '0';
   </section>
 
   <!-- trending products -->
-  
+
   <section class="services">
     <div class="container">
       <div class="text-center my-5">
@@ -285,9 +231,9 @@ $trending = isset($_POST['trending']) ? '1' : '0';
         <hr class="w-25 m-auto">
 
       </div>
-       <!-- php for  trending products -->
-     
-       <div class="row gy-4">
+      <!-- php for  trending products -->
+
+      <div class="row gy-4">
         <?php while ($row3 = mysqli_fetch_assoc($result3)) { ?>
           <div class="col-12 col-sm-6 col-md-4 col-lg-3 d-flex">
             <div class="product-card w-100 d-flex flex-column">
@@ -301,17 +247,19 @@ $trending = isset($_POST['trending']) ? '1' : '0';
                 <p>Original Price: ₹<?= $row3['original_price']; ?></p>
                 <p>Selling Price: ₹<?= $row3['selling_price']; ?></p>
                 <!-- <p>Quantity: <?= $row3['qty']; ?></p> -->
-                <a href="view_single_product.php<?= $id['id']; ?>" class="btn btn-dark">Explore</a>
+                <!-- <a href="single_product.php?id=<?= $row['id']; ?>" class="btn btn-dark">Explore</a> -->
+                                 <a href="single_product.php?id=<?= $row3['id']; ?>" class="btn btn-dark">Explore</a>
+
               </div>
             </div>
           </div>
         <?php } ?>
       </div>
-      
+
     </div>
     </div>
   </section>
-<!-- Products -->
+  <!-- Products -->
   <section class="services">
     <div class="container">
       <div class="text-center my-5">
@@ -359,7 +307,7 @@ $trending = isset($_POST['trending']) ? '1' : '0';
                 <p class="product-title mt-2"><?= $row2['name']; ?></p>
                 <p><?= $row2['description']; ?></p>
                 <!-- <p>Quantity: <?= $row2['qty']; ?></p> -->
-                <a href="#" class="btn btn-dark">Explore</a>
+                <a href="single_category.php?id=<?= $row2['id']; ?>" class="btn btn-dark">Explore</a>
               </div>
             </div>
           </div>
@@ -556,12 +504,15 @@ $trending = isset($_POST['trending']) ? '1' : '0';
 
 
 
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"></script>
+ <!-- Bootstrap Bundle includes Popper.js too -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 
-  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-  <script>
-    AOS.init();
-  </script>
+<!-- AOS for animations (already good) -->
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+  AOS.init();
+</script>
+
 </body>
+
 </html>

@@ -1,127 +1,112 @@
-<!-- Description: This file displays the products added to the cart by the user -->
 <?php
 session_start();
 $hostname = "localhost";
 $username = "root";
 $password = "";
-$dbname =  "ccbs";
+$dbname = "ccbs";
 
-
-$conn = new mysqli($hostname, $username, $password , $dbname);
-$sql ="select * from products where status='1'";
+$conn = new mysqli($hostname, $username, $password, $dbname);
+$sql = "SELECT * FROM products WHERE status='1'";
 $result = mysqli_query($conn, $sql);
+
 if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+  die("Connection failed: " . $conn->connect_error);
 }
 ?>
 
-
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <title>ClassicCave</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="styles.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Miniver&family=Poppins&family=Roboto&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <title>ClassicCave</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Miniver&family=Poppins&family=Roboto&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+  <style>
+    /* --- Product Card Styling --- */
+    <style>
+  .product-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .product-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+  }
+
+  .product-card img {
+    height: 250px;
+    object-fit: cover;
+  }
+
+  .product-card .card-body {
+    padding: 0.8rem 1rem;
+    text-align: center;
+  }
+
+  .product-card .card-title {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+  }
+
+  .product-card .card-body p {
+    font-size: 0.9rem;
+    margin: 0.2rem 0;
+  }
+
+  h1 {
+    font-family: 'Dancing Script', cursive;
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+
+  .btn-sm {
+    padding: 0.3rem 0.75rem;
+    font-size: 0.8rem;
+  }
+</style>
 </head>
 
 <body>
-<header>
-<nav class="navbar navbar-expand-lg navbar-light bg-light px-4 border-bottom fixed-top">
-  <div class="container-fluid ">
-    <a class="navbar-brand fs-6 d-flex align-items-center" href="index.php">
- <img src="assets/classic2.png" style="height: 8vh; width: 8vh;">
-  <span style="display:inline-block; width:auto; height:auto; margin-left: 5px;">ClassicCave</span>
-</a>
+  <header>
+    <?php include 'indexnav.php'; ?>
+  </header>
 
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav ms-auto mb-2 mb-lg-0 fs-5 text-end">
-        <li class="nav-item">
-          <a class="nav-link" aria-current="page" href="./index.php">Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="products.php">Products</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="about.php">About</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="cart.php">Cart</a>
-        </li>
-<?php if (isset($_SESSION['user_id'])): ?>
-  <li class="nav-item dropdown">
-    <a class="nav-link dropdown-toggle text-success" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    <?=($_SESSION['user_name']); ?>
-    </a>
-    <ul class="dropdown-menu">
-      <!-- <li><a class="dropdown-item" href="profile.php">Profile</a></li> -->
-      <?php if ($_SESSION['user_role'] === 'admin'): ?>
-        <li><a class="dropdown-item" href="admin_dashboard.php">Admin Panel</a></li>
-      <?php endif; ?>
-      <li><hr class="dropdown-divider"></li>
-      <li><a class="dropdown-item text-danger" href="logout.php">Logout</a></li>
-    </ul>
-  </li>
-<?php else: ?>
-  <li class="nav-item dropdown">
-    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-      Support
-    </a>
-    <ul class="dropdown-menu">
-      <li><a class="dropdown-item" href="login.php">Sign In</a></li>
-      <li><a class="dropdown-item" href="signin.php">Register</a></li>
-      <li><a class="dropdown-item" href="contact.php">Contact Us</a></li>
-    </ul>
-  </li>
-<?php endif; ?>
-
-       
-      </ul>
-    </div>
-  </div>
-</nav>
-</header>
-<div class="container mt-5 pt-5 ">
+  <div class="container mt-5 pt-5">
     <h1>All Products</h1>
-
-
-    
-      <div class="row mt-5 " style="display: flex; flex-wrap: wrap; justify-content: center;">
-<?php while ($row = mysqli_fetch_assoc($result)) { ?>
-  <div class="col-md-4 mb-4">
-    <div class="card h-100">
-      <img src="uploads/<?= $row['images']; ?>" alt="Product Image" class="card-img-top" style="height: 70vh; object-fit: cover;">
-      <div class="card-body">
-        <h3 class="card-title"><?= $row['name']; ?></h3>
-        <div class="container"></div>
-        <p class="card-text">Small Description: <?= $row['small_description']; ?></p>
-        <p class="card-text">Description: <?= $row['description']; ?></p>
-        <p class="card-text">Original Price: ₹<?= $row['original_price']; ?></p>
-        <p class="card-text">Selling Price: ₹<?= $row['selling_price']; ?></p>
-        <p class="card-text">Quantity: <?= $row['qty']; ?></p>
-        <div class="d-flex justify-content-between mt-3">
-    
-          <a href="#" class="btn btn-primary btn-sm">See Product</a>
+    <div class="row gy-4">
+      <?php while ($row = mysqli_fetch_assoc($result)) { ?>
+        <div class="col-md-4 mb-4">
+          <div class="card product-card h-100 shadow-sm border-0">
+            <img src="uploads/<?= $row['images']; ?>" class="card-img-top" alt="<?= $row['name']; ?>">
+            <div class="card-body">
+              <h5 class="card-title"><?= $row['name']; ?></h5>
+              <p class="text-muted mb-1">
+                ₹<?= $row['selling_price']; ?>
+                <del class="text-secondary small">₹<?= $row['original_price']; ?></del>
+              </p>
+              <a href="single_product.php?id=<?= $row['id']; ?>" class="btn btn-dark btn-sm mt-3">View Product</a>
+            </div>
+          </div>
         </div>
-      </div>
+      <?php } ?>
     </div>
   </div>
-<?php } ?>
-</div>
 
-</div>
-  
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"></script>
 </body>
+
 </html>

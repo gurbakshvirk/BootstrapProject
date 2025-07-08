@@ -31,7 +31,12 @@ $result = mysqli_query($conn, $sql);
 </head>
 <body>
 
-<div class="container">
+
+<?php
+include 'dashboardnav.php'
+?>
+
+<div class="container  mt-5 pt-5">
     <h2 class="mb-4">🧡 All Wishlists (Admin View)</h2>
 
     <table class="table table-bordered table-striped">
