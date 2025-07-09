@@ -1,14 +1,10 @@
 <?php
 session_start();
-// if (!isset($_SESSION['status'])) {
-//     $_SESSION['status'] === '0'; // or any default value you want
-// }
 
 $hostname = "localhost";
 $username = "root";
 $password = "";
 $dbname = "ccbs";
-
 
 $conn = new mysqli($hostname, $username, $password, $dbname);
 $sql = "select * from products where status='1'";
@@ -31,11 +27,6 @@ $result3 = mysqli_query($conn, $sql3);
 if ($conn->connect_error) {
   die("Connection failed: " . $conn->connect_error);
 }
-
-
-
-
-
 echo "Connected successfully";
 // <?php
 // session_start();
@@ -74,6 +65,15 @@ $trending = isset($_POST['trending']) ? '1' : '0';
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 
+
+  <!-- Owl Carousel CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css" />
+
+  <!-- jQuery (required for Owl Carousel) -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 </head>
 
 <body>
@@ -98,7 +98,37 @@ $trending = isset($_POST['trending']) ? '1' : '0';
           <div class="d-flex align-items-center justify-content-start flex-grow-1">
             <ul class="navbar-nav flex-row flex-lg-row flex-column gap-3 gap-lg-3" style="font-size: 15px;">
               <li class="nav-item"><a class="nav-link" href="./index.php">Home</a></li>
-              <li class="nav-item"><a class="nav-link" href="products.php">Products</a></li>
+              <?php
+              // navbar.php or wherever you include the navbar
+              $hostname = "localhost";
+              $username = "root";
+              $password = "";
+              $dbname = "ccbs";
+
+              $conn = new mysqli($hostname, $username, $password, $dbname);
+              if ($conn->connect_error) {
+                die("Connection failed: " . $conn->connect_error);
+              }
+
+              // Fetch active categories
+              $cat_query = "SELECT * FROM categories WHERE status = 1 ORDER BY name ASC";
+              $cat_result = mysqli_query($conn, $cat_query);
+              ?>
+
+              <!-- <li class="nav-item"></li> -->
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="categoriesDropdown" role="button"
+                  data-bs-toggle="dropdown" aria-expanded="false">
+                  Categories
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="categoriesDropdown">
+                  <?php while ($row = mysqli_fetch_assoc($cat_result)) { ?>
+                    <li><a class="dropdown-item"
+                        href="category.php?id=<?php echo $row['id']; ?>"><?php echo $row['name']; ?></a></li>
+                  <?php } ?>
+                </ul>
+              </li>
+
               <li class="nav-item"><a class="nav-link" href="about.php">About</a></li>
               <li class="nav-item"><a class="nav-link" href="wishlist.php">Wishlist</a></li>
               <?php if (isset($_SESSION['user_id'])): ?>
@@ -107,6 +137,7 @@ $trending = isset($_POST['trending']) ? '1' : '0';
             </ul>
           </div>
 
+
           <!-- CENTER LOGO (Desktop Only) -->
           <div class="d-none d-lg-flex align-items-center justify-content-center flex-shrink-0"
             style="position: absolute; left: 50%; transform: translateX(-50%);">
@@ -114,6 +145,10 @@ $trending = isset($_POST['trending']) ? '1' : '0';
               <img src="assets/classic2.png" alt="Logo" style="height: 16vh;">
             </a>
           </div>
+
+
+
+          <!-- SEARCH BAR -->
 
           <!-- RIGHT USER DROPDOWN -->
           <div class="d-flex align-items-center justify-content-end flex-grow-1">
@@ -149,7 +184,10 @@ $trending = isset($_POST['trending']) ? '1' : '0';
           </div>
         </div>
       </div>
+
     </nav>
+    <!-- Carousel -->
+
 
     <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
       <div class="carousel-inner">
@@ -174,7 +212,9 @@ $trending = isset($_POST['trending']) ? '1' : '0';
         <span class="visually-hidden">Next</span>
       </button>
     </div>
+
   </header>
+
   <!-- about and right side image -->
   <section class="about my-5">
     <div class="container ">
@@ -273,45 +313,43 @@ $trending = isset($_POST['trending']) ? '1' : '0';
       <div class="text-center my-5">
         <h1><span class="text-dark">Trending Products</span></h1>
         <hr class="w-25 m-auto">
-
       </div>
-      <!-- php for  trending products -->
 
-      <div class="row gy-4">
+      <!-- Owl Carousel for Trending Products -->
+      <div class="owl-carousel trending-carousel owl-theme">
         <?php while ($row3 = mysqli_fetch_assoc($result3)) { ?>
-          <div class="col-12 col-sm-6 col-md-4 col-lg-3 d-flex">
+          <div class="item">
+            <!-- <div class="product-card d-flex flex-column h-100"> -->
             <div class="product-card w-100 d-flex flex-column">
+              <!-- <div class="product-content text-center p-2"> -->
+              <?php
+              $product_id = $row3['id'];
+              $image_sql = "SELECT image_path FROM product_images WHERE product_id = $product_id LIMIT 1";
+              $image_result = mysqli_query($conn, $image_sql);
+              $image = mysqli_fetch_assoc($image_result);
+              $image_path = $image ? 'uploads/' . $image['image_path'] : 'assets/default.jpg';
+              ?>
+              <img src="<?= $image_path ?>" class="product-image img-fluid" alt="<?= $row3['name']; ?>">
 
-              <div class="product-content">
-                <!-- <img src="uploads/<?= $row3['images']; ?>" class="product-image img-fluid" alt="Product"> -->
-                <?php
-                $product_id = $row3['id'];
-                $image_sql = "SELECT image_path FROM product_images WHERE product_id = $product_id LIMIT 1";
-                $image_result = mysqli_query($conn, $image_sql);
-                $image = mysqli_fetch_assoc($image_result);
-                $image_path = $image ? 'uploads/' . $image['image_path'] : 'assets/default.jpg';
-                ?>
-                <img src="<?= $image_path ?>" class="product-image img-fluid" alt="<?= $row['name']; ?>">
+              <p class="product-title mt-2"><?= $row3['name']; ?></p>
+              <!-- <p><?= $row3['small_description']; ?></p> -->
+              <!-- <p><?= $row3['original_price']; ?> ₹<?= $row3['selling_price']; ?></p> -->
+              <p class="text-muted mb-1">
+                ₹<?= $row3['selling_price']; ?>
+                <del class="text-secondary small">₹<?= $row3['original_price']; ?></del>
+              </p>
+              <a href="single_product.php?id=<?= $row3['id']; ?>" class="btn btn-outline-dark">Explore</a>
+              <!-- </div> -->
 
-                <p class="product-title mt-2"><?= $row3['name']; ?></p>
-                <p><?= $row3['small_description']; ?></p>
-
-
-                <p>Original Price: ₹<?= $row3['original_price']; ?></p>
-                <p>Selling Price: ₹<?= $row3['selling_price']; ?></p>
-                <!-- <p>Quantity: <?= $row3['qty']; ?></p> -->
-                <!-- <a href="single_product.php?id=<?= $row['id']; ?>" class="btn btn-dark">Explore</a> -->
-                <a href="single_product.php?id=<?= $row3['id']; ?>" class="btn btn-dark">Explore</a>
-
-              </div>
             </div>
           </div>
         <?php } ?>
       </div>
-
     </div>
     </div>
   </section>
+
+
   <!-- Products -->
   <section class="services">
     <div class="container">
@@ -319,97 +357,61 @@ $trending = isset($_POST['trending']) ? '1' : '0';
         <h1><span class="text-dark">Products</span></h1>
         <hr class="w-25 m-auto">
       </div>
-      <!-- php for products -->
-      <div class="d-flex overflow-auto flex-nowrap py-2">
-        <?php while ($row = mysqli_fetch_assoc($result)) { ?>
-          <div class="col-12 col-sm-6 col-md-4 col-lg-3 d-flex align-items-stretch">
-            <div class="product-card w-100">
-              <div class="product-content">
-                <!-- <img src="uploads/<?= $row['images']; ?>" class="product-image img-fluid" alt="Product"> -->
-                <?php
-                $product_id = $row['id'];
-                $image_sql = "SELECT image_path FROM product_images WHERE product_id = $product_id LIMIT 1";
-                $image_result = mysqli_query($conn, $image_sql);
-                $image = mysqli_fetch_assoc($image_result);
-                $image_path = $image ? 'uploads/' . $image['image_path'] : 'assets/default.jpg';
-                ?>
-                <img src="<?= $image_path ?>" class="product-image img-fluid" alt="<?= $row['name']; ?>">
 
-                <p class="product-title mt-2"><?= $row['name']; ?></p>
-                <p><?= $row['small_description']; ?></p>
-                <p>Original Price: ₹<?= $row['original_price']; ?></p>
-                <p>Selling Price: ₹<?= $row['selling_price']; ?></p>
-                <!-- <p>Quantity: <?= $row['qty']; ?></p> -->
-                <a href="single_product.php?id=<?= $row['id']; ?>" class="btn btn-dark">Explore</a>
+      <?php if (mysqli_num_rows($result) > 0) { ?>
+        <div class="owl-carousel products-carousel owl-theme py-2">
+          <?php while ($row = mysqli_fetch_assoc($result)) { ?>
+            <div class="item">
+              <div class="product-card w-100 d-flex flex-column">
+                <div class="product-content text-center p-2">
+                  <?php
+                  $product_id = $row['id'];
+                  $image_sql = "SELECT image_path FROM product_images WHERE product_id = $product_id LIMIT 1";
+                  $image_result = mysqli_query($conn, $image_sql);
+                  $image = mysqli_fetch_assoc($image_result);
+                  $image_path = $image ? 'uploads/' . $image['image_path'] : 'assets/default.jpg';
+                  ?>
+                  <img src="<?= $image_path ?>" class="product-image img-fluid" alt="<?= $row['name']; ?>">
+                  <p class="product-title mt-2"><?= $row['name']; ?></p>
+                  <p><?= $row['small_description']; ?></p>
+                  <p class="text-muted mb-1">
+                    ₹<?= $row['selling_price']; ?>
+                    <del class="text-secondary small">₹<?= $row['original_price']; ?></del>
+                  </p>
+                  <a href="single_product.php?id=<?= $row['id']; ?>" class="btn btn-outline-dark">Explore</a>
+                </div>
               </div>
             </div>
-          </div>
-        <?php } ?>
+          <?php } ?>
+        </div>
+      <?php } else {
+        echo "<p>No products found.</p>";
+      } ?>
+
+      <div class="text-center mt-4">
+        <a href="products.php" class="btn btn-outline-dark">View All Products</a>
       </div>
-    </div>
     </div>
   </section>
 
 
-  <!-- categories -->
-  <section class="services">
-    <div class="container">
-      <div class="text-center my-5">
-        <h1><span class="text-dark">Categories</span></h1>
-        <hr class="w-25 m-auto">
 
-      </div>
-      <!-- php for categories -->
-      <div class="row gy-4">
-        <?php while ($row2 = mysqli_fetch_assoc($result2)) { ?>
-          <div class="col-12 col-sm-6 col-md-4 col-lg-3 d-flex align-items-stretch">
-            <div class="product-card w-100">
-              <div class="product-content">
-                <img src="catuploads/<?= $row2['image']; ?>" class="product-image img-fluid" alt="Product">
-                <p class="product-title mt-2"><?= $row2['name']; ?></p>
-                <p><?= $row2['description']; ?></p>
-                <!-- <p>Quantity: <?= $row2['qty']; ?></p> -->
-                <a href="single_category.php?id=<?= $row2['id']; ?>" class="btn btn-dark">Explore</a>
-              </div>
-            </div>
-          </div>
-        <?php } ?>
+
+  <!-- <?php while ($row = mysqli_fetch_assoc($result)) { ?>
+   
+      <div class="product-card w-100">
+        
+          <img src="<?= $image_path ?>" class="product-image img-fluid" alt="<?= $row['name']; ?>">
+          <p class="product-title mt-2"><?= $row['name']; ?></p>
+          <p><?= $row['small_description']; ?></p>
+          <p>Original Price: ₹<?= $row['original_price']; ?></p>
+          <p>Selling Price: ₹<?= $row['selling_price']; ?></p>
+          <a href="single_product.php?id=<?= $row['id']; ?>" class="btn btn-dark">Explore</a>
+        </div>
       </div>
     </div>
-    </div>
-  </section>
-
-
-  <!-- <div class="row mt-5" data-aos="zoom-in-down" data-aos-offset="200">
-        <div class="col-sm-12 col-md-4 col-lg-4 col-12">
-            <div class="card">
-               <div class="card-body">
-                <img src="assets/tshirts.jpg"style="width: 400px;" class="img-fluid" alt="image">
-                <p class="card-text ">T-Shirts</p>
-                <a href="#" class="btn btn-dark">Explore</a>
-              </div>
-            </div>
-        </div>
-        <div class="col-sm-12 col-md-4 col-lg-4 col-12">
-             <div class="card">
-              <div class="card-body">
-                <img src="assets/brownleather.jpg"style="width: 400px;" class="img-fluid" alt="image">
-                <p class="card-text ">Shoes</p>
-                <a href="#" class="btn btn-dark">Explore</a>
-              </div>
-            </div>
-        </div>
-        <div class="col-sm-12 col-md-4 col-lg-4 col-12">
-             <div class="card">
-               <div class="card-body">
-                <img src="assets/whitesneaker.jpg"style="width: 400px;" class="img-fluid" alt="image">
-                <p class="card-text ">Air Jordans</p>
-                <a href="#" class="btn btn-dark">Explore</a>
-              </div>
-            </div>
-        </div>
-    </div> -->
-
+  <?php } ?>
+</div> -->
 
 
 
@@ -563,6 +565,50 @@ $trending = isset($_POST['trending']) ? '1' : '0';
     </div>
   </footer>
 
+  <!-- jQuery (must be before Owl Carousel) -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <!-- Owl Carousel -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+
+  <!-- Your custom init script -->
+  <script>
+    $(document).ready(function () {
+      $(".trending-carousel").owlCarousel({
+        loop: true,
+        margin: 20,
+        nav: true,
+        dots: false,
+        autoplay: false, // you said no autoplay
+        responsive: {
+          0: { items: 1 },
+          576: { items: 2 },
+          768: { items: 3 },
+          992: { items: 4 }
+        }
+      });
+    });
+  </script>
+
+  <script>
+    $(document).ready(function () {
+      $('.products-carousel').owlCarousel({
+        loop: true,
+        margin: 20,
+        // nav: true,
+        // dots: true,
+        autoplay: false,              // ✅ Enable autoplay
+        autoplayTimeout: 1500,       // ✅ Delay in milliseconds (3000ms = 3s)
+        autoplayHoverPause: true,   // ✅ Pause on hover
+        responsive: {
+          0: { items: 1 },
+          576: { items: 2 },
+          768: { items: 3 },
+          992: { items: 4 }
+        }
+      });
+    });
+  </script>
 
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>

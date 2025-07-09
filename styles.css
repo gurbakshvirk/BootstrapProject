@@ -92,7 +92,7 @@ h1 {
 /* INDEX PAGE PRODUCTS ALL CARDS */
 .product-card {
   background-color: #fff;
-  border-radius: 12px;
+  border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   overflow: hidden;
   display: flex;
@@ -100,26 +100,46 @@ h1 {
   justify-content: space-between;
   transition: transform 0.3s ease;
   height: 100%;
-  padding: 10px;
+   /* padding: 10px; */
+   margin: 5px;
+  /*
+  min-height: 380px;  /* ✅ Add this or adjust as per trending card */
+  max-height: 400px;  /* ✅ Optional if you want fixed height */
+  align-items: center;
 }
+/* .product-card {
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  display: flex;
+  /* margin: 50px; */
+  /* flex-direction: column;
+  justify-content: space-between; 
+  
+  padding: 10px;
+  height: 100%;
+  
+} */
 
 .product-card:hover {
-  transform: scale(1.02);
+  transform: scale(1.01);
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
 }
 
 .product-card .product-image {
-  width: 100%;
+  width: fit-content;
+  /* height: 200px; */
   height: 250px;
-  object-fit: cover;
-  border-radius: 8px;
+  /* object-fit: cover; */
+  /* border-radius: 8px;  */
 }
 
 
 
 
 .product-card p {
-  margin: 5px 0;
+  margin: 10px 0;
   font-size: 0.9rem;
   color: #555;
   text-align: center;
@@ -130,19 +150,22 @@ h1 {
 }
 
 .product-card .btn {
-  background-color: #28a745;
-  color: #fff;
-  border: none;
+  /* background-color: #28a745; */
+  outline: #000!important;
+  /* color: black; */
+  /* border: none; */
+  /* color: #fff; */
   padding: 8px 14px;
   font-size: 0.9rem;
   border-radius: 6px;
   transition: background-color 0.3s ease;
   align-self: center;
   margin-top: auto;
+  margin-bottom: auto;
 }
 
 .product-card .btn:hover {
-  background-color: #218838;
+  background-color:black;
 }
 
 footer {
@@ -172,23 +195,24 @@ footer a:hover {
 .explore-btn {
   width: 20vh;
   height: 8vh;
-  background-color: rgb(0, 247, 255);
+  outline: black!important;
+  background-color:white;
   animation-name: button-animation;
   animation-duration: 10s;
 }
 
 @keyframes button-animation {
   0% {
-    background-color: rgb(208, 220, 252);
+    background-color: rgb(127, 127, 127);
   }
   25% {
     background-color: rgb(86, 122, 158);
   }
   50% {
-    background-color: blue;
+    background-color: rgb(155, 155, 157);
   }
   100% {
-    background-color: rgb(16, 23, 93);
+    background-color: rgb(51, 51, 54);
   }
 }
 
@@ -242,8 +266,8 @@ footer a:hover {
 }
 
 .aboutimg:hover {
-  transform: rotateY(360deg) scale(1.9);
-  transition: 5s;
+  transform: rotateY(180deg) scale(1.1);
+  transition: 3s;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
 }
 

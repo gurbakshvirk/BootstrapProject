@@ -74,9 +74,7 @@
 
 
 
-
-
-     <nav class="navbar navbar-expand-lg navbar-light bg-light px-5 border-bottom fixed-top"style="height: 70px;">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light px-5 border-bottom fixed-top" style="height: 70px;">
       <div class="container-fluid">
 
         <!-- Mobile Logo -->
@@ -96,7 +94,37 @@
           <div class="d-flex align-items-center justify-content-start flex-grow-1">
             <ul class="navbar-nav flex-row flex-lg-row flex-column gap-3 gap-lg-3" style="font-size: 15px;">
               <li class="nav-item"><a class="nav-link" href="./index.php">Home</a></li>
-              <li class="nav-item"><a class="nav-link" href="products.php">Products</a></li>
+              <?php
+              // navbar.php or wherever you include the navbar
+              $hostname = "localhost";
+              $username = "root";
+              $password = "";
+              $dbname = "ccbs";
+
+              $conn = new mysqli($hostname, $username, $password, $dbname);
+              if ($conn->connect_error) {
+                die("Connection failed: " . $conn->connect_error);
+              }
+
+              // Fetch active categories
+              $cat_query = "SELECT * FROM categories WHERE status = 1 ORDER BY name ASC";
+              $cat_result = mysqli_query($conn, $cat_query);
+              ?>
+
+              <!-- <li class="nav-item"></li> -->
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="categoriesDropdown" role="button"
+                  data-bs-toggle="dropdown" aria-expanded="false">
+                  Categories
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="categoriesDropdown">
+                  <?php while ($row = mysqli_fetch_assoc($cat_result)) { ?>
+                    <li><a class="dropdown-item"
+                        href="category.php?id=<?php echo $row['id']; ?>"><?php echo $row['name']; ?></a></li>
+                  <?php } ?>
+                </ul>
+              </li>
+
               <li class="nav-item"><a class="nav-link" href="about.php">About</a></li>
               <li class="nav-item"><a class="nav-link" href="wishlist.php">Wishlist</a></li>
               <?php if (isset($_SESSION['user_id'])): ?>
@@ -104,6 +132,7 @@
               <?php endif; ?>
             </ul>
           </div>
+
 
           <!-- CENTER LOGO (Desktop Only) -->
           <div class="d-none d-lg-flex align-items-center justify-content-center flex-shrink-0"
@@ -123,25 +152,33 @@
                 <ul class="dropdown-menu dropdown-menu-end">
                   <?php if ($_SESSION['user_role'] === 'admin'): ?>
                     <li><a class="dropdown-item" href="admin_dashboard.php">Admin Panel</a></li>
-                    <li><hr class="dropdown-divider"></li>
+                    <li>
+                      <hr class="dropdown-divider">
+                    </li>
                   <?php endif; ?>
                   <li><a class="dropdown-item" href="my_orders.php">🧾 My Orders</a></li>
                   <li><a class="dropdown-item text-danger" href="logout.php">Logout</a></li>
                 </ul>
               </div>
             <?php else: ?>
-  <div class="nav-item dropdown">
-    <a class="nav-link dropdown-toggle text-dark" href="#" id="guestDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-      Account
-    </a>
-    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="guestDropdown">
-      <li><a class="dropdown-item" href="login.php">Login</a></li>
-      <li><a class="dropdown-item" href="register.php">Create Account</a></li>
-    </ul>
-  </div>
-<?php endif; ?>
+              <div class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle text-dark" href="#" id="guestDropdown" role="button"
+                  data-bs-toggle="dropdown" aria-expanded="false">
+                  Account
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="guestDropdown">
+                  <li><a class="dropdown-item" href="login.php">Login</a></li>
+                  <li><a class="dropdown-item" href="register.php">Create Account</a></li>
+                </ul>
+              </div>
+            <?php endif; ?>
 
           </div>
         </div>
       </div>
+
     </nav>
+
+
+
+     
