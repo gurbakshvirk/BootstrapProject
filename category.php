@@ -66,65 +66,62 @@ $product_result = mysqli_query($conn, $product_query);
 
 
 
-            <div class="row mt-5 " style="display: flex; flex-wrap: wrap; justify-content: center;">
-                <?php
-                if (mysqli_num_rows($product_result) > 0) {
-                    while ($product = mysqli_fetch_assoc($product_result)) {
-                        ?>
-                        <div class="col-md-4 mb-4">
-                            <div class="card h-100">
-                                <div id="carousel<?= $product['id']; ?>" class="carousel slide" data-bs-ride="carousel">
-                                    <div class="carousel-inner">
-                                        <?php
-                                        $product_id = $product['id'];
-                                        $img_query = "SELECT image_path FROM product_images WHERE product_id = $product_id";
-                                        $img_result = mysqli_query($conn, $img_query);
-                                        $active_set = false;
-                                        if (mysqli_num_rows($img_result) > 0):
-                                            while ($img = mysqli_fetch_assoc($img_result)):
-                                                $active_class = !$active_set ? 'active' : '';
-                                                $active_set = true;
-                                                ?>
-                                                <div class="carousel-item <?= $active_class ?>">
-                                                    <img src="uploads/<?= $img['image_path']; ?>" class="d-block w-100"
-                                                        alt="Product Image" style="height: 70vh; object-fit: cover;">
-                                                </div>
-                                            <?php endwhile;
-                                        else: ?>
-                                            <div class="carousel-item active">
-                                                <img src="uploads/<?= $product['images']; ?>" class="d-block w-100"
-                                                    alt="Single Image" style="height: 70vh; object-fit: cover;">
-                                            </div>
-                                        <?php endif; ?>
-                                    </div>
-                                    <!-- Controls (optional) -->
-                                    <button class="carousel-control-prev" type="button"
-                                        data-bs-target="#carousel<?= $product['id']; ?>" data-bs-slide="prev">
-                                        <span class="carousel-control-prev-icon"></span>
-                                    </button>
-                                    <button class="carousel-control-next" type="button"
-                                        data-bs-target="#carousel<?= $product['id']; ?>" data-bs-slide="next">
-                                        <span class="carousel-control-next-icon"></span>
-                                    </button>
-
-
-                                    <div class="card-body">
-                                        <h5 class="card-title"><?php echo $product['name']; ?></h5>
-                                        <p class="card-text">₹<?php echo $product['selling_price']; ?></p>
-                                        <a href="single_product.php?id=<?php echo $product['id']; ?>"
-                                            class="btn btn-dark">View</a>
-
-                                    </div>
-                                </div>
-                            </div>
+           <div class="row mt-5">
+    <?php
+    if (mysqli_num_rows($product_result) > 0) {
+        while ($product = mysqli_fetch_assoc($product_result)) {
+            ?>
+            <div class="col-md-3 col-sm-6 mb-4">
+                <div class="card h-100 shadow-sm">
+                    <div id="carousel<?= $product['id']; ?>" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-inner">
                             <?php
-                    }
-                } else {
-                    echo "<p class='text-center'>No products found in this category.</p>";
-                }
-                ?>
+                            $product_id = $product['id'];
+                            $img_query = "SELECT image_path FROM product_images WHERE product_id = $product_id";
+                            $img_result = mysqli_query($conn, $img_query);
+                            $active_set = false;
+                            if (mysqli_num_rows($img_result) > 0):
+                                while ($img = mysqli_fetch_assoc($img_result)):
+                                    $active_class = !$active_set ? 'active' : '';
+                                    $active_set = true;
+                                    ?>
+                                    <div class="carousel-item <?= $active_class ?>">
+                                        <img src="uploads/<?= $img['image_path']; ?>" class="d-block w-100"
+                                            alt="Product Image" style="height: 40vh; object-fit: cover;">
+                                    </div>
+                                <?php endwhile;
+                            else: ?>
+                                <div class="carousel-item active">
+                                    <img src="uploads/<?= $product['images']; ?>" class="d-block w-100"
+                                        alt="Single Image" style="height: 40vh; object-fit: cover;">
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                        <button class="carousel-control-prev" type="button"
+                            data-bs-target="#carousel<?= $product['id']; ?>" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon"></span>
+                        </button>
+                        <button class="carousel-control-next" type="button"
+                            data-bs-target="#carousel<?= $product['id']; ?>" data-bs-slide="next">
+                            <span class="carousel-control-next-icon"></span>
+                        </button>
+                    </div>
+
+                    <div class="card-body text-center">
+                        <h5 class="card-title mb-1"><?= $product['name']; ?></h5>
+                        <p class="mb-2"><strong>₹<?= $product['selling_price']; ?></strong></p>
+                        <a href="single_product.php?id=<?= $product['id']; ?>" class="btn btn-outline-dark btn-sm">Explore</a>
+                    </div>
                 </div>
             </div>
+            <?php
+        }
+    } else {
+        echo "<p class='text-center'>No products found in this category.</p>";
+    }
+    ?>
+</div>
+
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>

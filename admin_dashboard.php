@@ -87,9 +87,9 @@ while ($row = mysqli_fetch_assoc($categoryChartResult)) {
       <!-- <span class="fw-bold"></span> -->
     </a>
     <div class="d-flex align-items-center gap-3">
-      <i class="bi bi-search"></i>
-      <i class="bi bi-person"></i>
-      <i class="bi bi-bag"></i>
+      <!-- <i class="bi bi-search"></i> -->
+      <!-- <i class="bi bi-person"></i> -->
+      <!-- <i class="bi bi-bag"></i> -->
       <?php if (isset($_SESSION['user_id']) && $_SESSION['user_role'] === 'admin'): ?>
         <div class="nav-item dropdown">
           <a class="nav-link dropdown-toggle text-success" href="#" role="button" data-bs-toggle="dropdown">
@@ -181,9 +181,9 @@ while ($row = mysqli_fetch_assoc($categoryChartResult)) {
         </div>
       <?php } ?>
     </div>
-    <div class="text-center mt-2">
+    <!-- <div class="text-center mt-2">
       <a href="trending_products.php" class="btn btn-primary">View All</a>
-    </div>
+    </div> -->
   </div>
 
   <!-- Trending Categories Slider -->
@@ -202,7 +202,7 @@ while ($row = mysqli_fetch_assoc($categoryChartResult)) {
       <?php } ?>
     </div>
     <div class="text-center mt-2">
-      <a href="trending_s.php" class="btn btn-primary">View All</a>
+      <!-- <a href="trending_s.php" class="btn btn-primary">View All</a> -->
     </div>
   </div>
 

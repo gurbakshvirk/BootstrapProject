@@ -54,11 +54,8 @@ $trending = isset($_POST['trending']) ? '1' : '0';
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="styles.css">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Miniver&family=Poppins&family=Roboto&display=swap"
-    rel="stylesheet">
+  <!-- <link rel="preconnect" href="https://fonts.googleapis.com"> -->
+  <!-- <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
@@ -130,9 +127,14 @@ $trending = isset($_POST['trending']) ? '1' : '0';
               </li>
 
               <li class="nav-item"><a class="nav-link" href="about.php">About</a></li>
-              <li class="nav-item"><a class="nav-link" href="wishlist.php">Wishlist</a></li>
+
+              <li class="nav-item"><a class="nav-link" href="wishlist.php"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
+  <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15"/>
+</svg>Wishlist</a></li>
               <?php if (isset($_SESSION['user_id'])): ?>
-                <li class="nav-item"><a class="nav-link" href="cart.php?id=<?= $_SESSION['user_id'] ?>">Cart</a></li>
+                <li class="nav-item"><a class="nav-link" href="cart.php?id=<?= $_SESSION['user_id'] ?>"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart3" viewBox="0 0 16 16">
+  <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .49.598l-1 5a.5.5 0 0 1-.465.401l-9.397.472L4.415 11H13a.5.5 0 0 1 0 1H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l.84 4.479 9.144-.459L13.89 4zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
+</svg>Cart</a></li>
               <?php endif; ?>
             </ul>
           </div>
@@ -154,12 +156,18 @@ $trending = isset($_POST['trending']) ? '1' : '0';
           <div class="d-flex align-items-center justify-content-end flex-grow-1">
             <?php if (isset($_SESSION['user_id'])): ?>
               <div class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle text-success" href="#" role="button" data-bs-toggle="dropdown">
+                <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-bs-toggle="dropdown">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
+  <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+</svg>
                   <?= htmlspecialchars($_SESSION['user_name']); ?>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end">
                   <?php if ($_SESSION['user_role'] === 'admin'): ?>
-                    <li><a class="dropdown-item" href="admin_dashboard.php">Admin Panel</a></li>
+                    <li><a class="dropdown-item" href="admin_dashboard.php">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-gear" viewBox="0 0 16 16">
+  <path d="M11 5a3 3 0 1 1-6 0 3 3 0 0 1 6 0M8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4m.256 7a4.5 4.5 0 0 1-.229-1.004H3c.001-.246.154-.986.832-1.664C4.484 10.68 5.711 10 8 10q.39 0 .74.025c.226-.341.496-.65.804-.918Q8.844 9.002 8 9c-5 0-6 3-6 4s1 1 1 1zm3.63-4.54c.18-.613 1.048-.613 1.229 0l.043.148a.64.64 0 0 0 .921.382l.136-.074c.561-.306 1.175.308.87.869l-.075.136a.64.64 0 0 0 .382.92l.149.045c.612.18.612 1.048 0 1.229l-.15.043a.64.64 0 0 0-.38.921l.074.136c.305.561-.309 1.175-.87.87l-.136-.075a.64.64 0 0 0-.92.382l-.045.149c-.18.612-1.048.612-1.229 0l-.043-.15a.64.64 0 0 0-.921-.38l-.136.074c-.561.305-1.175-.309-.87-.87l.075-.136a.64.64 0 0 0-.382-.92l-.148-.045c-.613-.18-.613-1.048 0-1.229l.148-.043a.64.64 0 0 0 .382-.921l-.074-.136c-.306-.561.308-1.175.869-.87l.136.075a.64.64 0 0 0 .92-.382zM14 12.5a1.5 1.5 0 1 0-3 0 1.5 1.5 0 0 0 3 0"/>
+</svg> Admin Panel</a></li>
                     <li>
                       <hr class="dropdown-divider">
                     </li>
@@ -198,7 +206,7 @@ $trending = isset($_POST['trending']) ? '1' : '0';
           <img src="assets/shirts.jpg" class="d-block w-100" alt="image2">
         </div>
         <div class="carousel-item">
-          <img src="assets/jeans.jpg" class="d-block w-100" alt="image3">
+          <img src="assets/slide3.jpg" class="d-block w-100" alt="image3">
         </div>
       </div>
       <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying"
@@ -216,11 +224,11 @@ $trending = isset($_POST['trending']) ? '1' : '0';
   </header>
 
   <!-- about and right side image -->
-  <section class="about my-5">
+  <section class="about my-2">
     <div class="container ">
 
 
-      <div class="text-center my-5">
+      <div class="text-center my-4">
         <h1 data-aos="fade-up" data-aos-offset="100">Welcome to<span class="text-primary"> ClassicCave</span></h1>
         <hr class="w-25 m-auto">
       </div>
@@ -334,9 +342,9 @@ $trending = isset($_POST['trending']) ? '1' : '0';
               <p class="product-title mt-2"><?= $row3['name']; ?></p>
               <!-- <p><?= $row3['small_description']; ?></p> -->
               <!-- <p><?= $row3['original_price']; ?> ₹<?= $row3['selling_price']; ?></p> -->
-              <p class="text-muted mb-1">
+              <p class="product-price text-dark mb-1">
                 ₹<?= $row3['selling_price']; ?>
-                <del class="text-secondary small">₹<?= $row3['original_price']; ?></del>
+                <del class="original-price text-secondary small">₹<?= $row3['original_price']; ?></del>
               </p>
               <a href="single_product.php?id=<?= $row3['id']; ?>" class="btn btn-outline-dark">Explore</a>
               <!-- </div> -->
@@ -348,8 +356,6 @@ $trending = isset($_POST['trending']) ? '1' : '0';
     </div>
     </div>
   </section>
-
-
   <!-- Products -->
   <section class="services">
     <div class="container">
@@ -357,13 +363,12 @@ $trending = isset($_POST['trending']) ? '1' : '0';
         <h1><span class="text-dark">Products</span></h1>
         <hr class="w-25 m-auto">
       </div>
-
       <?php if (mysqli_num_rows($result) > 0) { ?>
-        <div class="owl-carousel products-carousel owl-theme py-2">
+        <div class="owl-carousel products-carousel owl-theme">
           <?php while ($row = mysqli_fetch_assoc($result)) { ?>
             <div class="item">
               <div class="product-card w-100 d-flex flex-column">
-                <div class="product-content text-center p-2">
+                <!-- <div class="product-content text-center p-2"> -->
                   <?php
                   $product_id = $row['id'];
                   $image_sql = "SELECT image_path FROM product_images WHERE product_id = $product_id LIMIT 1";
@@ -373,13 +378,13 @@ $trending = isset($_POST['trending']) ? '1' : '0';
                   ?>
                   <img src="<?= $image_path ?>" class="product-image img-fluid" alt="<?= $row['name']; ?>">
                   <p class="product-title mt-2"><?= $row['name']; ?></p>
-                  <p><?= $row['small_description']; ?></p>
-                  <p class="text-muted mb-1">
+                  <!-- <p><?= $row['small_description']; ?></p> -->
+                  <p class="product-price text-dark mb-1 ">
                     ₹<?= $row['selling_price']; ?>
-                    <del class="text-secondary small">₹<?= $row['original_price']; ?></del>
+                    <del class="original-price text-secondary small">₹<?= $row['original_price']; ?></del>
                   </p>
                   <a href="single_product.php?id=<?= $row['id']; ?>" class="btn btn-outline-dark">Explore</a>
-                </div>
+                <!-- </div> -->
               </div>
             </div>
           <?php } ?>
@@ -393,28 +398,6 @@ $trending = isset($_POST['trending']) ? '1' : '0';
       </div>
     </div>
   </section>
-
-
-
-
-  <!-- <?php while ($row = mysqli_fetch_assoc($result)) { ?>
-   
-      <div class="product-card w-100">
-        
-          <img src="<?= $image_path ?>" class="product-image img-fluid" alt="<?= $row['name']; ?>">
-          <p class="product-title mt-2"><?= $row['name']; ?></p>
-          <p><?= $row['small_description']; ?></p>
-          <p>Original Price: ₹<?= $row['original_price']; ?></p>
-          <p>Selling Price: ₹<?= $row['selling_price']; ?></p>
-          <a href="single_product.php?id=<?= $row['id']; ?>" class="btn btn-dark">Explore</a>
-        </div>
-      </div>
-    </div>
-  <?php } ?>
-</div> -->
-
-
-
 
   <!-- Reviews -->
   <section class="team my-5 text-center">
@@ -458,7 +441,7 @@ $trending = isset($_POST['trending']) ? '1' : '0';
     </div>
   </section>
 
-  <section class="contact py-5">
+  <!-- <section class="contact py-5">
     <div class="container">
       <div class="text-center my-5">
         <h1>Create Your<span class="text-dark"> Account now</span></h1>
@@ -522,7 +505,7 @@ $trending = isset($_POST['trending']) ? '1' : '0';
         </div>
       </div>
     </div>
-  </section>
+  </section> -->
   <footer class="bg-dark text-light pt-4 mt-5">
     <div class="container">
       <div class="row text-center text-md-start">
